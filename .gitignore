@@ -1,0 +1,115 @@
+# ==========================================
+# IDE & System Files
+# ==========================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse / STS
+.classpath
+.project
+.settings/
+.factorypath
+.springBeans
+.sts4-cache/
+.apt_generated/
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ==========================================
+# Java / Maven (Spring Boot)
+# ==========================================
+**/target/
+target/
+**/build/
+build/
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Maven wrapper jar (can be downloaded on demand)
+.mvn/wrapper/maven-wrapper.jar
+
+# Spring Initializr help file
+HELP.md
+
+# ==========================================
+# Frontend (Node / Vite)
+# ==========================================
+# Usually handled by frontend/.gitignore, but ignored globally for safety
+**/node_modules/
+**/dist/
+**/dist-ssr/
+*.local
+
+# ==========================================
+# Python & Machine Learning
+# ==========================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.env.local
+.env.*.local
+venv/
+.venv/
+env/
+.env/
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# ML Models / Weights / Datasets
+*.onnx
+*.pth
+*.pt
+*.h5
+*.pkl
+*.pickle
+*.joblib
+
+# ==========================================
+# Project-Specific Large & Temporary Files
+# ==========================================
+# Large CSV datasets
+*.csv
+
+# StarUML diagram files
+*.mdj
+
+# Jupyter notebook files (if you want to ignore them)
+*.ipynb
+
+# Compressed archives
+*.zip
+*.tar.gz
+*.rar
