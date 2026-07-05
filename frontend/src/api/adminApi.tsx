@@ -24,6 +24,9 @@ export const adminApi = {
     getTopUsers: () =>
         axiosClient.get<TopUserResponse[]>("/dashboard/top-users"),
 
+    getUserRiskProfile: (userId: number) =>
+        axiosClient.get<any>(`/users/${userId}/risk-profile`),
+
     // ===== ALERT =====
     getAllAlerts: () =>
         axiosClient.get<AlertResponse[]>("/dashboard/alert"),

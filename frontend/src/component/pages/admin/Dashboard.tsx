@@ -17,9 +17,16 @@ import {
     FaExclamationTriangle,
     FaBell,
     FaUserShield,
-    FaSignOutAlt,  // Thêm icon cho Login/Logout
-    FaStore         // Thêm icon cho Market
+    FaSignOutAlt,
+    FaStore
 } from "react-icons/fa";
+
+const FaExchangeAltAny = FaExchangeAlt as any;
+const FaExclamationTriangleAny = FaExclamationTriangle as any;
+const FaBellAny = FaBell as any;
+const FaUserShieldAny = FaUserShield as any;
+const FaSignOutAltAny = FaSignOutAlt as any;
+const FaStoreAny = FaStore as any;
 
 import "./Dashboard.css";
 
@@ -93,13 +100,13 @@ export default function Dashboard() {
                         onClick={() => navigate("/market")}
                         style={navBtnStyle}
                     >
-                        <FaStore style={{ marginRight: "6px" }} /> Go to Market
+                        <FaStoreAny style={{ marginRight: "6px" }} /> Go to Market
                     </button>
                     <button
-                        onClick={() => navigate("/login")}
+                        onClick={() => { localStorage.clear(); navigate("/login"); }}
                         style={{ ...navBtnStyle, background: "#ef4444" }}
                     >
-                        <FaSignOutAlt style={{ marginRight: "6px" }} /> Login / Logout
+                        <FaSignOutAltAny style={{ marginRight: "6px" }} /> Login / Logout
                     </button>
                 </div>
             </div>
@@ -109,28 +116,28 @@ export default function Dashboard() {
                 <Card
                     title="Transactions"
                     value={summary?.totalTransactions}
-                    icon={<FaExchangeAlt />}
+                    icon={<FaExchangeAltAny />}
                     color="#3b82f6"
                 />
 
                 <Card
                     title="Frauds"
                     value={summary?.totalFrauds}
-                    icon={<FaExclamationTriangle />}
+                    icon={<FaExclamationTriangleAny />}
                     color="#ef4444"
                 />
 
                 <Card
                     title="Alerts"
                     value={summary?.totalAlerts}
-                    icon={<FaBell />}
+                    icon={<FaBellAny />}
                     color="#f59e0b"
                 />
 
                 <Card
                     title="High Risk Users"
                     value={summary?.highRiskUsers}
-                    icon={<FaUserShield />}
+                    icon={<FaUserShieldAny />}
                     color="#8b5cf6"
                 />
 

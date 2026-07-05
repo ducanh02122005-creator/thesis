@@ -25,4 +25,6 @@ public class PurchaseResponse {
     private Boolean fraudDetected;
 
     private String riskLevel;
+
+    private String decision;
 }

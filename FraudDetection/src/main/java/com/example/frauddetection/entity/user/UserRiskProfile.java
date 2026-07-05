@@ -29,5 +29,10 @@ public class UserRiskProfile {
     @Enumerated(EnumType.STRING)
     private RiskLevel riskLevel;
 
+    private Double trustScore;
+
+    @Enumerated(EnumType.STRING)
+    private TrustLevel trustLevel;
+
     private LocalDateTime updatedAt;
 }

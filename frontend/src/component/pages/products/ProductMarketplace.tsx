@@ -2,8 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { productApi, ProductDTO } from "../../../api/productApi";
 import { purchaseApi } from "../../../api/purchaseApi";
-import { FaShoppingCart, FaTrash, FaTimes } from "react-icons/fa";
+import { FaShoppingCart, FaTrash, FaTimes, FaUser } from "react-icons/fa";
+import { GoArrowLeft } from "react-icons/go";
 import "./ProductMarketplace.css";
+
+const GoArrowLeftAny = GoArrowLeft as any;
+const FaShoppingCartAny = FaShoppingCart as any;
+const FaTrashAny = FaTrash as any;
+const FaTimesAny = FaTimes as any;
+const FaUserAny = FaUser as any;
 
 type CartItem = {
     product: ProductDTO;
@@ -84,7 +91,7 @@ export default function ProductMarketplace() {
                 items: cart.map(item => ({ productId: item.product.id!, quantity: item.quantity }))
             });
 
-            if (res.data.fraudProbability > 0.7) {
+            if (res.data.decision === "BLOCK" || res.data.status === "CANCELLED") {
                 alert("🚨 Giao dịch bị từ chối! Hệ thống phát hiện dấu hiệu rủi ro cao (High Fraud Risk). Vui lòng liên hệ bộ phận hỗ trợ.");
                 setIsCartOpen(false);
                 return;
@@ -121,7 +128,7 @@ export default function ProductMarketplace() {
 
                 <div className="header-buttons">
                     <button onClick={() => setIsCartOpen(true)} className="btn-cart-toggle">
-                        <FaShoppingCart size={18} />
+                        <FaShoppingCartAny size={18} />
                         <span>Cart</span>
                         {totalItemsCount > 0 && <span className="cart-badge">{totalItemsCount}</span>}
                     </button>
@@ -270,7 +277,7 @@ function ShoppingCart({
                 <div className="cart-header" style={{ flexShrink: 0 }}>
                     <h2>Your Shopping Cart ({totalItemsCount})</h2>
                     <button onClick={onClose} className="btn-close">
-                        <FaTimes size={20} />
+                        <FaTimesAny size={20} />
                     </button>
                 </div>
 
@@ -306,7 +313,7 @@ function ShoppingCart({
                                 </div>
 
                                 <button onClick={() => onRemoveFromCart(item.product.id!)} className="btn-delete-item" style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", padding: "8px" }}>
-                                    <FaTrash size={14} />
+                                    <FaTrashAny size={14} />
                                 </button>
                             </div>
                         ))

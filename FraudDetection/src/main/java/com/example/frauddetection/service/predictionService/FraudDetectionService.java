@@ -18,7 +18,7 @@ public class FraudDetectionService {
     ) throws Exception {
 
         float amtLog =
-                (float)Math.log(request.getAmount());
+                (float)Math.log(Math.max(request.getAmount(), 0.0001));
 
         int categoryIdx =
                 categoryMapper.getIndex(

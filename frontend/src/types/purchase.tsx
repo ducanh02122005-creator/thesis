@@ -9,8 +9,12 @@ export interface PurchaseRequest {
 }
 
 export interface PurchaseResponse {
-    transactionId: string;
-    amount: number;
+    purchaseId?: number;
+    transactionId: number;
+    totalAmount: number;
     fraudProbability: number;
-    status: "APPROVED" | "FRAUD_ALERT";
+    status: "PAID" | "PENDING" | "CANCELLED";
+    fraudDetected?: boolean;
+    riskLevel?: string;
+    decision?: string;
 }

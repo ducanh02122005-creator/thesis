@@ -7,6 +7,7 @@ import com.example.frauddetection.dtos.transaction.TransactionResponse;
 import com.example.frauddetection.entity.prediction.FraudPrediction;
 import com.example.frauddetection.entity.products.Products;
 import com.example.frauddetection.entity.transaction.Transaction;
+import com.example.frauddetection.entity.transaction.Decision;
 import com.example.frauddetection.entity.transaction.purchases.PurchaseStatus;
 import com.example.frauddetection.entity.transaction.purchases.Purchases;
 import com.example.frauddetection.entity.transaction.purchases.PurchasesItems;
@@ -37,22 +38,22 @@ public class PurchaseService {
     public PurchaseResponse createPurchase(
             PurchaseRequest request) throws Exception {
 
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() ->
-                        new RuntimeException("User not found"));
         String email = Objects.requireNonNull(SecurityContextHolder.getContext()
                         .getAuthentication())
                 .getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
+
         Purchases purchase = Purchases.builder()
                 .user(user)
                 .status(PurchaseStatus.PAID)
                 .totalAmount(0.0)
                 .build();
 
-        purchaseRepository.save(purchase);
+        purchase = purchaseRepository.save(purchase);
 
         double totalAmount = 0;
-
         String transactionCategory = null;
 
         for (PurchaseItemRequest itemRequest : request.getItems()) {
@@ -94,10 +95,6 @@ public class PurchaseService {
 
             totalAmount += itemTotal;
 
-            /*
-             * Category cho model
-             * Có thể lấy category sản phẩm đầu tiên
-             */
             if (transactionCategory == null) {
                 transactionCategory =
                         product.getCategory();
@@ -105,8 +102,7 @@ public class PurchaseService {
         }
 
         purchase.setTotalAmount(totalAmount);
-
-        purchaseRepository.save(purchase);
+        purchase = purchaseRepository.save(purchase);
 
         TransactionResponse transactionResponse =
                 transactionService.processTransaction(
@@ -114,22 +110,26 @@ public class PurchaseService {
                         transactionCategory
                 );
 
+        if ("BLOCK".equals(transactionResponse.getDecision())) {
+            // Revert stock updates
+            for (PurchaseItemRequest itemRequest : request.getItems()) {
+                Products product = productRepository.findById(itemRequest.getProductId())
+                        .orElseThrow(() -> new RuntimeException("Product not found"));
+                product.setStock(product.getStock() + itemRequest.getQuantity());
+                productRepository.save(product);
+            }
+            purchase.setStatus(PurchaseStatus.CANCELLED);
+            purchase = purchaseRepository.save(purchase);
+        }
+
         return PurchaseResponse.builder()
                 .purchaseId(purchase.getId())
-                .transactionId(
-                        transactionResponse.getTransactionId()
-                )
+                .transactionId(transactionResponse.getTransactionId())
                 .totalAmount(totalAmount)
                 .status(purchase.getStatus())
-                .fraudProbability(
-                        transactionResponse.getFraudProbability()
-                )
-                .fraudDetected(
-                        transactionResponse.getFraud()
-                )
-//                .riskLevel(
-//                        transactionResponse.getRiskLevel()
-//                )
+                .fraudProbability(transactionResponse.getFraudProbability())
+                .fraudDetected(transactionResponse.getFraud())
+                .decision(transactionResponse.getDecision())
                 .build();
     }
 }

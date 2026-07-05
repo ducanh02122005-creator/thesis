@@ -4,6 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { FaPlus, FaTrash, FaEdit, FaTimes, FaTags } from "react-icons/fa";
 import { GoArrowLeft } from "react-icons/go";
 
+const GoArrowLeftAny = GoArrowLeft as any;
+const FaPlusAny = FaPlus as any;
+const FaTrashAny = FaTrash as any;
+const FaEditAny = FaEdit as any;
+const FaTimesAny = FaTimes as any;
+const FaTagsAny = FaTags as any;
+
 export default function ProductManagement() {
     const navigate = useNavigate();
     const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -115,13 +122,13 @@ export default function ProductManagement() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 30, flexWrap: "wrap", gap: 15 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
                     <button onClick={() => navigate("/admin/dashboard")} style={backBtnStyle}>
-                        <GoArrowLeft size={20} style={{ flexShrink: 0 }} />
+                        <GoArrowLeftAny size={20} style={{ flexShrink: 0 }} />
                     </button>
                     <h1 style={{ margin: 0, fontSize: 26, color: "#0f172a" }}>📦 Product Management</h1>
                 </div>
 
                 <button onClick={openCreateModal} style={addBtnStyle}>
-                    <FaPlus style={{ marginRight: 8, flexShrink: 0 }} size={14} /> Add New Product
+                    <FaPlusAny style={{ marginRight: 8, flexShrink: 0 }} size={14} /> Add New Product
                 </button>
             </div>
 
@@ -151,7 +158,7 @@ export default function ProductManagement() {
                                     <td style={{ ...tdStyle, fontWeight: 600, color: "#1e293b" }}>{product.name}</td>
                                     <td style={tdStyle}>
                                         <span style={categoryBadgeStyle}>
-                                            <FaTags style={{ marginRight: 6, flexShrink: 0 }} size={12} /> {product.category}
+                                            <FaTagsAny style={{ marginRight: 6, flexShrink: 0 }} size={12} /> {product.category}
                                         </span>
                                     </td>
                                     <td style={tdStyle}>
@@ -166,10 +173,10 @@ export default function ProductManagement() {
                                     <td style={{ ...tdStyle, textAlign: "right" }}>
                                         <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
                                             <button onClick={() => openEditModal(product)} style={{ ...actionBtnStyle, color: "#4f46e5", background: "#f5f3ff" }} title="Edit">
-                                                <FaEdit size={14} style={{ flexShrink: 0 }} />
+                                                <FaEditAny size={14} style={{ flexShrink: 0 }} />
                                             </button>
                                             <button onClick={() => handleDelete(product.id!, product.name)} style={{ ...actionBtnStyle, color: "#ef4444", background: "#fef2f2" }} title="Delete">
-                                                <FaTrash size={14} style={{ flexShrink: 0 }} />
+                                                <FaTrashAny size={14} style={{ flexShrink: 0 }} />
                                             </button>
                                         </div>
                                     </td>
@@ -189,7 +196,7 @@ export default function ProductManagement() {
                                 {editingProduct ? "✏️ Edit Product" : "➕ Add New Product"}
                             </h2>
                             <button onClick={() => setIsModalOpen(false)} style={closeBtnStyle}>
-                                <FaTimes size={16} style={{ flexShrink: 0 }} />
+                                <FaTimesAny size={16} style={{ flexShrink: 0 }} />
                             </button>
                         </div>
 

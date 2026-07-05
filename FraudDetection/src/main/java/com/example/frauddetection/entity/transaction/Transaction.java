@@ -55,4 +55,7 @@ public class Transaction {
 
     @Column(nullable = false)
     private Boolean fraudDetected;
+
+    @Enumerated(EnumType.STRING)
+    private Decision decision;
 }

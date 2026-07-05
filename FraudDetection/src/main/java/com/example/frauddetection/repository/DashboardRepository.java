@@ -71,7 +71,10 @@ SELECT new com.example.frauddetection.dtos.dashboard.TopUserResponse(
     u.id,
     u.fullName,
     COUNT(fp.id),
-    urp.riskScore
+    urp.riskScore,
+    urp.riskLevel,
+    urp.trustScore,
+    urp.trustLevel
 )
 FROM FraudPrediction fp
 JOIN fp.transactionId t
@@ -79,7 +82,7 @@ JOIN t.user u
 JOIN UserRiskProfile urp
     ON urp.user.id = u.id
 WHERE fp.isFraud = true
-GROUP BY u.id, u.fullName, urp.riskScore
+GROUP BY u.id, u.fullName, urp.riskScore, urp.riskLevel, urp.trustScore, urp.trustLevel
 ORDER BY COUNT(fp.id) DESC
 """)
     List<TopUserResponse> getTopUsers(Pageable pageable);

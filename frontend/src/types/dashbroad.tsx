@@ -21,4 +21,7 @@ export interface TopUserResponse {
     fullName: string;
     fraudCount: number;
     riskScore: number;
+    riskLevel?: string;
+    trustScore?: number;
+    trustLevel?: string;
 }

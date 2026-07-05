@@ -15,4 +15,6 @@ public class TransactionResponse {
     private Double fraudProbability;
 
     private Boolean fraud;
+
+    private String decision;
 }
