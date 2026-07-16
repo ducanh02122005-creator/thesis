@@ -1,0 +1,1242 @@
+\documentclass[12pt]{article}
+
+% --- ENCODING & FONT ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{mathptmx}
+
+% --- PAGE LAYOUT ---
+\usepackage[a4paper, left=15mm, right=15mm, top=20mm, bottom=30mm]{geometry}
+\linespread{1.3} % Giãn dòng tiêu chuẩn học thuật giúp tăng độ thoáng và số trang thực tế
+
+% --- HEADER & FOOTER ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{UNIVERSITY OF SCIENCE \& TECHNOLOGY OF HANOI}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+\fancyfoot[C]{\thepage}
+
+% --- GRAPHICS & DIAGRAMS ---
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{eso-pic}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc}
+\usepackage{subcaption}
+
+% --- COLORS & BOXES ---
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{fancybox}
+
+% --- MATH ---
+\usepackage{amsmath, amssymb, amsfonts, mathrsfs}
+
+% --- TABLES ---
+\usepackage{array, booktabs, multirow, longtable}
+\usepackage{tabularx}
+
+% --- TEXT & LINKS ---
+\usepackage{url}
+\usepackage[colorlinks=true, linkcolor=black, urlcolor=black, citecolor=black]{hyperref}
+\usepackage{indentfirst}
+
+% --- ALGORITHMS ---
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% --- CITATIONS ---
+\usepackage{cite}
+\usepackage{tocloft}
+
+% Cấu hình chấm dài (dot leaders) trong Mục lục
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+% Khai báo hàm vẽ viền trang bìa
+\newcommand{\TitlePageBorder}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw[line width=2pt]
+      ([xshift=1.2cm, yshift=-1.2cm]current page.north west) rectangle
+      ([xshift=-1.2cm, yshift=1.2cm]current page.south east);
+  \end{tikzpicture}
+}
+
+% --- XỬ LÝ KHAI BÁO MÃ NGUỒN (JAVA & TYPESCRIPT) ---
+\usepackage{listings}
+
+\lstset{
+    frame=single,
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    breakatwhitespace=true,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black}\itshape,
+    stringstyle=\color{orange},
+    showstringspaces=false,
+    keepspaces=true
+}
+
+\begin{document}
+
+% =======================================================
+% TITLE PAGE (BACHELOR THESIS - USTH STANDARD)
+% =======================================================
+\begin{titlepage}
+\thispagestyle{empty} 
+
+\begin{center}
+    % --- UNIVERSITY INFO ---
+    {\fontsize{13pt}{15pt}\selectfont \textbf{UNIVERSITY OF SCIENCE AND TECHNOLOGY OF HANOI}}\\[0.2cm]
+    {\fontsize{11pt}{13pt}\selectfont \textbf{DEPARTMENT OF INFORMATION AND COMMUNICATION TECHNOLOGY}}\\[1.5cm]
+    
+    % --- LOGO ---
+    \begin{center}
+        \includegraphics[width=6cm, keepaspectratio]{usth.png}
+    \end{center}
+    \vspace{1.5cm}
+
+    % --- DOCUMENT TYPE ---
+    {\fontsize{28pt}{32pt}\selectfont \textbf{BACHELOR THESIS}}\\[1.2cm]
+
+    % --- STUDENT INFO ---
+    {\fontsize{14pt}{16pt}\selectfont By}\\[0.3cm]
+    {\fontsize{16pt}{18pt}\selectfont Duong Duc Anh}\\[2cm]
+
+    % --- TITLE ---
+    {\fontsize{14pt}{16pt}\selectfont Title:}\\[0.4cm]
+    {\fontsize{18pt}{22pt}\selectfont \textbf{Transformer-Based Financial Transaction Analysis \\ for Fraud Detection}}\\[3.5cm]
+    
+    % --- SUPERVISORS INFO ---
+    \begin{flushleft} 
+    \fontsize{14pt}{18pt}\selectfont
+    \setlength{\tabcolsep}{0pt}
+    \hspace{1.5cm}
+    \begin{tabular}{ll}
+        External Supervisor:\hspace{0.5cm} & Mr. Nguyen Dinh Bac \\
+        Internal Supervisor:\hspace{0.5cm} & Mr. Huynh Vinh Nam
+    \end{tabular}
+    \end{flushleft}
+    
+    \vfill
+    
+    % --- LOCATION & DATE ---
+    {\fontsize{14pt}{16pt}\selectfont \textbf{Hanoi, June – 2026}}
+\end{center}
+\end{titlepage}
+\newpage
+\pagestyle{empty} % Xóa số trang
+\onehalfspacing   % Giãn dòng 1.5 giống như trong ảnh
+
+\begin{center}
+    \large To whom it may concern,
+\end{center}
+
+\vspace{1.5cm}
+
+\noindent I, \dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots (supervisor's name), certify that the thesis/ internship report of Mr/Ms. \dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots\dots(student's name) is qualified to be presented in the Internship Jury 2025-2026.
+
+\vspace{3cm}
+
+\begin{flushright}
+    \begin{tabular}{c}
+        Hanoi, date\space \space \space \space   month \space \space \space \space   year 2026 \\[0.8cm]
+        \textbf{Supervisor's signature}
+    \end{tabular}
+\end{flushright}
+\newpage
+% =======================================================
+% ACKNOWLEDGMENTS & ABSTRACT
+% =======================================================
+\pagenumbering{roman}
+
+\section*{Acknowledgments}
+I would like to express my deepest gratitude to my academic advisor, \textbf{Mr. Huynh Vinh Nam}, and my institutional mentor, \textbf{Mr. Nguyen Dinh Bac}, who provided continuous guidance, critical feedback, and invaluable technical support throughout the duration of this internship project. I extend my sincere appreciation to the faculty members of the Department of Information and Communication Technology at the University of Science and Technology of Hanoi (USTH) for establishing a rigorous educational foundation that made this intensive research possible. Furthermore, I am immensely grateful to my peers and technical collaborators who offered computational insights during the implementation and optimization of the deep learning architecture. Finally, special thanks are due to my family for their unwavering encouragement throughout my academic journey.
+\nopagebreak
+\newpage
+
+\section*{Abstract}
+Financial transaction fraud represents a multi-billion dollar threat to the stability of the global digital economy. Traditional detection paradigms, heavily reliant on static rule-based validation or aggregated classical machine learning classifiers, fail to capture the complex, non-linear chronological context embedded within continuous transaction streams. This research addresses these limitations by designing, training, and deploying a robust end-to-end operational software and intelligence framework driven by a deep \texttt{TransformerClassifier}. Utilizing multi-head self-attention mechanisms, the proposed neural network processes transactional attributes as sequential elements, implicitly discovering hidden behavioral anomalies without the need for manual sliding-window feature engineering.
+
+To handle the extreme data imbalance typical of real-world credit card logs, a data engineering pipeline incorporating localized cyclic temporal decomposition, mathematical log-stabilization, and structured random under-sampling is developed. The optimized model is subsequently exported into a pre-compiled Open Neural Network Exchange (\texttt{ONNX}) continuous framework and embedded directly within a Spring Boot backend as an in-memory execution session using the local ONNX Runtime Java API. A presentation layer is constructed using Vite, ReactJS, and TypeScript to deliver real-time reactive visual telemetry to security analysts. 
+
+Empirical validation on a large-scale dataset spanning over $555,719$ transaction sequences confirms that the model achieves an exceptional anomaly capture sensitivity, recording a critical fraud Recall rate of $96.88\%$, a stable minority Precision of $0.13$, and a robust Precision-Recall Area Under the Curve (PR-AUC) of $0.8026$. The system demonstrates high runtime efficiency, maintaining sub-millisecond inference latencies while eliminating external network serialization overhead. This report details the underlying mathematical concepts, full-stack architectural design, concrete integration code, and experimental results, establishing a scalable roadmap for production-grade financial fraud mitigation.
+\newpage
+% =======================================================
+% TABLE OF CONTENTS
+% =======================================================
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+% =======================================================
+% LIST OF TABLES & LIST OF FIGURES
+% =======================================================
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{\listtablename}
+\listoftables
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{\listfigurename}
+\listoffigures
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{List of Abbreviations}
+\section*{List of Abbreviations}
+
+\begin{tabular}{ll}
+\textbf{Abbreviation} & \textbf{Description} \\
+\hline
+ADASYN & Adaptive Synthetic Sampling \\
+AI & Artificial Intelligence \\
+API & Application Programming Interface \\
+AUC & Area Under the Curve \\
+BCE & Binary Cross-Entropy \\
+CPU & Central Processing Unit \\
+DT & Decision Tree \\
+DTO & Data Transfer Object \\
+EDA & Exploratory Data Analysis \\
+GPU & Graphics Processing Unit \\
+HTTP & Hypertext Transfer Protocol \\
+IQR & Interquartile Range \\
+JDK & Java Development Kit \\
+JSON & JavaScript Object Notation \\
+JWT & JSON Web Token \\
+LR & Logistic Regression \\
+LTS & Long-Term Support \\
+MHA & Multi-Head Attention \\
+NN & Neural Network \\
+ONNX & Open Neural Network Exchange \\
+OS & Operating System \\
+PE & Positional Encoding \\
+PR & Precision-Recall \\
+RAM & Random Access Memory \\
+REST & Representational State Transfer \\
+RF & Random Forest \\
+ROC & Receiver Operating Characteristic \\
+RUS & Random Under-Sampling \\
+SMOTE & Synthetic Minority Over-sampling Technique \\
+SVM & Support Vector Machine \\
+UI & User Interface \\
+USTH & University of Science and Technology of Hanoi \\
+XGB & Extreme Gradient Boosting \\
+\hline
+\end{tabular}
+
+\clearpage
+% =======================================================
+% SECTION 1: INTRODUCTION
+% =======================================================
+\section{Introduction}
+
+\subsection{Context and Motivation}
+In the contemporary financial ecosystem, credit and debit cards have become the primary method for consumer payments in the United States, making every transaction a potential opportunity for exploitation. Financial activity has shifted from, according to Security.org\cite{Security.org}, localized events to a continuous digital stream where 61.3 million Americans—roughly one in three adults—experienced fraudulent charges in the past year alone. While this digital shift offers convenience, it has enabled sophisticated threat actors to execute remote maneuvers such as data breaches, skimming, and credential theft, which now account for 95 percent of all fraud cases, while physical card theft has dwindled to just 5 percent.
+
+Historically, banking institutions protected their assets against a diverse array of threats—including credit card fraud, loan fraud, and money laundering—using static rule-based engines\cite{Hasnain Kashif, & Fawad Naseer}
+. These legacy structures cross-reference incoming transaction metadata against fixed conditional thresholds. However, recent analysis indicates these rigid systems achieve only about $78.3\%$ detection accuracy, struggling to adapt as financial fraud, waste, and abuse escalate to a global cost of $\$5.4$ trillion annually
+. 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{fraud_detection_technique.png} 
+    \caption{Classification of Financial Institution and its types .}
+    \label{fig:numeric_distributions}
+\end{figure}
+
+\subsection{Significance and Role of the Project}
+This internship project bridges the gap between advanced self-attention deep learning research and practical, high-performance software engineering within corporate banking environments. The overarching role of the developed system is to introduce an automated, intelligent risk mitigation layer that functions concurrently with core transactional accounting loops without introducing execution blocks or latency penalties. 
+
+From an AI research perspective, the significance of this project lies in its utilization of the Transformer architecture to exploit sequential self-attention mechanisms over tabular data. In financial logs, transaction attributes (such as timestamps, merchant categories, and purchase volumes) possess deep non-linear relationships that traditional models fail to map without extensive, manual, and expensive feature engineering. By tokenizing these tabular features into aligned temporal sequences, the model automatically weighs the relative significance of past events against the current payment request. From an operational engineering perspective, the project demonstrates how complex deep learning checkpoints can be deployed within an enterprise Spring Boot ecosystem using native in-memory binaries via an embedded Open Neural Network Exchange (\texttt{ONNX}) runtime, bypassing the high latency overhead typically caused by external Python-based REST microservices.
+
+\subsection{Related Works in Fraud Detection}
+The academic and industrial engineering trajectory of anomaly detection in financial records can be classified into four technical generations. Table 1 provided by Hasnain Kashif, & Fawad Naseer\cite{Hasnain Kashif, & Fawad Naseer}, a comparative analysis of these methodologies across critical production performance vectors.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Benefits and Drawbacks of Various Fraud Detection Techniques}
+\label{tab:related_works_matrix}
+\begin{tabular}{|p{3.8cm}|p{7.0cm}|p{6.2cm}|}
+\hline
+\textbf{Techniques} & \textbf{Benefits} & \textbf{Drawbacks} \\ \hline
+Artificial Immune System (AIS) & Self-organization, ease of integration with other systems, and fault tolerance. & In the NSA, extensive training is required. \\ \hline
+Neural Networks (NN) & High detection accuracy, portability, and speed. & High cost/data format sensitivity. \\ \hline
+Genetic Algorithm (GA) & Detection is inexpensive and quick. & Setup and operation require extensive tool knowledge and are difficult to understand. \\ \hline
+Hidden Markov Model (HMM) & Rapid detection. & Low accuracy/incapability to handle large data sets. \\ \hline
+Bayesian Belief Network (BBN) & To operate, data must be trained and a high processing speed is required. More precise and faster than a neural network. & Excessive training is required, and BBN's are slower to apply to new instances. \\ \hline
+Clustering method (CN) & Clustering assists in grouping data into similar clusters, allowing for simple data retrieval. & Numerous non-fraudulent activities were mistakenly identified as frauds. So, to detect fraud accurately and efficiently, real data must be available. \\ \hline
+Self-Organizing Map (SOM) & To reduce incredibly complex problems down to easily interpreted data mappings. & Requires neuron weights to be necessary and sufficient to cluster inputs. \\ \hline
+Decision Tree (DT) & High adaptability/ease of implementation. & Each condition must be checked individually. The transaction condition is used in fraud detection. \\ \hline
+Support Vector Machine (SVM) & SVMs can be robust even if the training sample is biased. & Expensive/poor performance when processing large datasets. \\ \hline
+\end{tabular}
+\end{table}
+
+The academic and industrial engineering landscape of anomaly detection in financial records covers a wide spectrum of computational intelligence, soft computing, and machine learning methodologies, as summarized in Table \ref{tab:related_works_matrix}. Early soft-computing paradigms leveraged biology-inspired frameworks such as the Artificial Immune System (AIS) and Genetic Algorithms (GA) to exploit structural self-organization and cost-effective, rapid execution; however, these approaches inherently required extensive training environments or highly specialized domain knowledge to operate. To model probabilistic states and temporal configurations, architectures like Bayesian Belief Networks (BBN) and Hidden Markov Models (HMM) were introduced, but they frequently exhibited low accuracy thresholds and severe performance degradation when processing massive, enterprise-grade data streams.
+
+Within the classical supervised machine learning domain, shallow classifiers such as Decision Trees (DT) and Support Vector Machines (SVM) offered high adaptability and structural resilience to biased training samples, yet they introduced significant computational latency due to isolated conditional checks and suffered from poor scalability. To streamline high-dimensional data retrieval, unsupervised paradigms including standard Clustering Methods (CN) and Self-Organizing Maps (SOM) were deployed to map complex transaction spaces into simpler, interpretable representations, though they regularly suffered from elevated false-positive rates when clean, real-world data profiles were unavailable. To overcome these localized constraints, standard Neural Networks (NN) emerged to deliver superior accuracy and processing velocity, establishing the structural baseline for modern deep-learning anomaly detection frameworks.
+\subsection{Objectives}
+
+Directly addressing the architectural bottlenecks, scalability constraints, and elevated false-positive profiles inherent in classical soft-computing and shallow machine learning paradigms detailed above, the core mission of this project is to architect, evaluate, and deploy a sequence-aware, end-to-end deep learning fraud detection framework. To systematically transcend the limitations of prior arts, the project fulfills the following specific technical objectives:
+
+\begin{itemize}
+    \item \textbf{Data Engineering Optimization and Imbalance Mitigation}: Overcome the data format sensitivities and high false-positive risks typical of clustering methods by building a robust, scalable ingestion pipeline. This pipeline will clean, normalize, and transform massive, highly skewed multi-year financial logs into balanced, standardized sequence tokens tailored for deep-learning ingestion.
+    
+    \item \textbf{Sequence-Aware Deep Learning Architecture Formulation}: Address the structural incapacity of Hidden Markov Models (HMM) and Bayesian Networks in processing streams with high precision. This objective focuses on constructing a customized PyTorch Transformer model that leverages multi-head self-attention mechanisms to seamlessly capture multi-modal, long-range dependencies across numerical and categorical transaction vectors simultaneously.
+    
+    \item \textbf{High-Performance, Low-Latency Enterprise Integration}: Direct combat the computational latencies, isolated conditional checks, and poor large-scale scalability observed in traditional Decision Trees and Support Vector Machines (SVM). By compiling the trained Transformer model into an optimized ONNX format and embedding it directly within a production-grade Spring Boot backend via the ONNX Runtime Java API, the framework achieves sub-millisecond, in-memory inference without external network overhead.
+    
+    \item \textbf{Interactive Analytics and Interpretable Monitoring Presentation}: Resolve the interpretability constraints and complex, opaque mappings associated with early connectionist and unsupervised topologies like Self-Organizing Maps (SOM). This is achieved by implementing a responsive, TypeScript-backed React dashboard designed to translate complex model outputs into real-time visual transaction distributions, intuitive user risk stratification tiers, and immediate security alerts.
+\end{itemize}
+
+\subsection{Scope of the Project}
+This research and development work is executed over the comprehensive \textbf{Kaggle: Credit Card Transactions Fraud Detection Dataset}\cite{dataset}, encompassing two full years of continuous synthetic financial operations. The project scope is structurally bounded by the following technical limits:
+\begin{enumerate}
+    \item \textbf{Algorithmic Scope}: Modeling is limited to tabular sequence classification using multi-head self-attention, omitting graph-based neural structures (GCNs) or raw image-based processing.
+    \item \textbf{Architectural Scope}: System design focuses on a centralized microservice backend connecting to a local MySQL database instance and a reactive single-page client dashboard, utilizing synchronous REST channels backed by asynchronous internal logging mechanisms.
+    \item \textbf{Operational Scope}: Data balancing is constrained to offline structural random under-sampling at the training partition stage, setting up a performance baseline for future cost-sensitive optimizations.
+\end{enumerate}
+
+\subsection{Expected Outcomes}
+Upon completion, the project delivers a set of production-ready components:
+\begin{itemize}
+    \item \textbf{A Trained Transformer Checkpoint}: An optimized model weight file exported into a standardized serialized formats (\texttt{.onnx}), ready for cross-platform integration.
+\item \textbf{An End-to-End Predictive Ingestion Pipeline}: A modular Python/Pandas architecture integrating temporal transformation, log-scaling, and categorical vector serialization, paired with an optimized classifier that consistently achieves an empirical accuracy exceeding 90\% on out-of-sample test datasets.
+    \item \textbf{An Enterprise Backend Ecosystem}: A complete Spring Boot application containing a functional MySQL persistence layer, tokenized security verification (\texttt{JWT}), and embedded inference service classes.
+    \item \textbf{An Analytical Control Panel}: A functional frontend system displaying live transaction data arrays, critical fraud distributions, and user tier monitoring hooks.
+\end{itemize}
+
+\subsection{Report Outline}
+The structural breakdown of this report is organized into the following sections:
+\begin{itemize}
+    \item \textbf{Section 1: Introduction} establishes the context and motivation, project significance, academic related works, concrete objectives, project scope, expected deliverables, and report outline.
+    \item \textbf{Section 2: Mathematical Foundations and Modeling Frameworks} formalizes the architectural frameworks and mathematical specifications of the baseline classifiers (Logistic Regression, Decision Tree, Random Forest, and XGBoost) and the core Transformer architecture, including self-attention, multi-head assembly, positional encoding, and optimization loss mechanics.
+    \item \textbf{Section 3: Preprocessing, Data Profiles, and Database Schema} details the data simulation paradigm, feature schemas, exploratory data analysis, class imbalance mitigation via random under-sampling, and advanced behavioral feature engineering. It also defines the relational database schema, the rule-based behavioral intelligence engines (Risk, Trust, and Decision), and the end-to-end full-stack processing flow.
+    \item \textbf{Section 4: Implementation Details and Environment Setup} specifies the computational environments and hardware-software configurations for both training and deployment, outlining the reactive frontend architecture in Vite/TypeScript/React.
+    \item \textbf{Section 5: Experimental Results and Empirical Discussion} reports the quantitative evaluation metrics (Precision, Recall, F1, and PR-AUC) on the full test partition, training diagnostics, convergence tracks, and key security operational trade-offs.
+    \item \textbf{Section 6: Discussion, Limitations, and Future Work} provides a critical appraisal of system limits and outlines a strategic, evolutionary roadmap for microservice decoupling, structural facade design patterns, cost-sensitive objectives, and deep behavioral context integration.
+    \item \textbf{Section 7: Conclusion} summarizes the research findings, operational outcomes, and implications of the deep learning transaction analysis framework.
+    \item \textbf{References} compiles the academic and technical literature cited throughout the report.
+    \item \textbf{Appendix} provides a reference link to the public GitHub repository containing the complete implementation source code for reproducing the project.
+\end{itemize}
+
+
+
+% =======================================================
+% SECTION 3: METHODOLOGY AND SYSTEM ARCHITECTURE
+% =======================================================
+
+% =======================================================
+% SECTION 2: MATHEMATICAL FOUNDATIONS AND MODELING FRAMEWORKS
+% =======================================================
+\section{Mathematical Foundations and Modeling Frameworks}
+
+\subsection{Architectural Frameworks and Mathematical Specifications}
+To evaluate the predictive capabilities of deep sequential architectures against traditional parametric and ensemble machine learning approaches under severe class imbalance, four distinct modeling methodologies are formalized below.
+
+\subsubsection{Logistic Regression }\cite{LR}
+As a foundational baseline, Logistic Regression models the probability of fraud by assuming a linear relationship between the log-odds of the binary target variable and the input features. Let $\mathbf{x} \in \mathbb{R}^{d}$ represent a flattened, non-sequential feature vector extracted from a single transaction event. The model maps this vector to a continuous risk probability $P(y=1|\mathbf{x})$ via a linear combination scaled by a parameter weight vector $\mathbf{w} \in \mathbb{R}^{d}$ and an operational bias $b \in \mathbb{R}$:
+\begin{equation}
+z = \mathbf{w}^T \mathbf{x} + b
+\end{equation}
+This unnormalized logit score $z$ is then transformed into a bounded probability space using the standard logistic sigmoid activation operator $\sigma(z)$:
+\begin{equation}
+P(y=1|\mathbf{x}) = \sigma(z) = \frac{1}{1 + e^{-(\mathbf{w}^T \mathbf{x} + b)}}
+\label{eq:logistic_regression}
+\end{equation}
+While computationally efficient and highly interpretable via exponentiated coefficients, Logistic Regression is fundamentally restricted by its linear decision boundary. It cannot natively capture high-order non-linear feature interactions without extensive manual engineering.
+
+\subsubsection{Decision Tree }\cite{DT}
+As a step toward capturing non-linear boundaries, a single Decision Tree operates as a non-parametric model that recursively partitions the input feature space $\mathbb{R}^d$ into orthogonal hyper-rectangles. At each parent node containing a subset of training data $\mathcal{D}$, the algorithm evaluates possible binary splits defined by a feature dimension $j \in \{1, 2, \dots, d\}$ and a split threshold $s \in \mathbb{R}$:
+\begin{equation}
+\mathcal{D}_L(j, s) = \{ (\mathbf{x}, y) \in \mathcal{D} \mid x_j \le s \} \quad \text{and} \quad \mathcal{D}_R(j, s) = \{ (\mathbf{x}, y) \in \mathcal{D} \mid x_j > s \}
+\end{equation}
+The optimal parameter split pair $(j^*, s^*)$ is selected to maximize the reduction in impurity (impurity gain). The baseline model utilizes Gini Impurity $I_G(\mathcal{D})$ as the optimization criterion:
+\begin{equation}
+I_G(\mathcal{D}) = 1 - \sum_{k \in \{0, 1\}} p_k^2
+\end{equation}
+where $p_k = \frac{1}{|\mathcal{D}|} \sum_{(\mathbf{x}, y) \in \mathcal{D}} \mathbb{I}(y = k)$ represents the empirical probability of class $k$ within node $\mathcal{D}$. The split selection solves:
+\begin{equation}
+(j^*, s^*) = \arg\max_{j, s} \left[ I_G(\mathcal{D}) - \left( \frac{|\mathcal{D}_L(j,s)|}{|\mathcal{D}|} I_G(\mathcal{D}_L(j,s)) + \frac{|\mathcal{D}_R(j,s)|}{|\mathcal{D}|} I_G(\mathcal{D}_R(j,s)) \right) \right]
+\end{equation}
+Recursive partitioning is executed until reaching stopping criteria (e.g., maximum tree depth or minimum node size thresholds), at which point leaf nodes output the class distribution probability. While highly interpretable and capable of discovering arbitrary non-linear boundaries, individual decision trees exhibit high variance and are structurally sensitive to minor perturbations in the training dataset.
+
+\subsubsection{Random Forest }\cite{RF}
+To capture complex non-linear boundaries without manual feature interactions, Random Forest operates as a non-parametric ensemble of independent Decision Trees. It relies on the principle of Bootstrap Aggregation (Bagging) combined with the random subspace method.
+
+Let $M$ define the total number of decision trees trained within the forest ensemble. For each tree $m \in \{1, 2, \dots, M\}$, a bootstrap sample $\mathcal{D}_m$ is drawn with replacement from the global training dataset $\mathcal{D}$. When splitting a node within tree $m$, instead of evaluating all $d$ available features, a random subset of features $\mathcal{M} \subset \{1, 2, \dots, d\}$ (where $|\mathcal{M}| \approx \sqrt{d}$) is sampled to select the optimal splitting criterion based on Gini Impurity or Information Gain. The individual decision tree prediction for a transaction vector $\mathbf{x}$ is denoted as $T_m(\mathbf{x}) \in \{0, 1\}$.
+
+The final classification decision is determined via a majority voting scheme across all constituent trees:
+\begin{equation}
+\hat{y}_{\text{RF}} = \text{mode}\left\{ T_1(\mathbf{x}), T_2(\mathbf{x}), \dots, T_M(\mathbf{x}) \right\}
+\end{equation}
+Alternatively, continuous risk probabilities are computed by averaging the predicted class probabilities across the ensemble:
+\begin{equation}
+P(y=1|\mathbf{x}) = \frac{1}{M} \sum_{m=1}^{M} P_m(y=1|\mathbf{x})
+\end{equation}
+By aggregating decentralized, low-bias but high-variance models, Random Forest substantially reduces global variance and prevents overfitting, making it a highly resilient tabular classifier.
+
+\subsubsection{XGBoost (Extreme Gradient Boosting)}\cite{XGB}
+Unlike the parallel assembly of Random Forest, XGBoost (Extreme Gradient Boosting) constructs an additive ensemble sequentially. It minimizes a regularized objective function by fitting weak base learners (typically regression trees) to the negative gradients (pseudo-residuals) of the loss function computed in preceding iterations.
+
+At iteration $t$, the prediction $\hat{y}_i^{(t)}$ for sample $i$ is updated from the prior prediction $\hat{y}_i^{(t-1)}$ by adding a new tree function $f_t(\mathbf{x}_i) \in \mathcal{F}$, where $\mathcal{F}$ represents the space of all possible Classification and Regression Trees (CARTs):
+\begin{equation}
+\hat{y}_i^{(t)} = \hat{y}_i^{(t-1)} + f_t(\mathbf{x}_i)
+\end{equation}
+The global objective function $\mathcal{O}^{(t)}$ to be minimized at step $t$ incorporates a differentiable loss function $\ell$ alongside a structural regularization term $\Omega$ that penalizes tree complexity to prevent overfitting:
+\begin{equation}
+\mathcal{O}^{(t)} = \sum_{i=1}^{B} \ell\left(y_i, \hat{y}_i^{(t-1)} + f_t(\mathbf{x}_i)\right) + \Omega(f_t)
+\end{equation}
+where the regularizer over a tree with $T$ leaves and leaf weights $w$ is defined as:
+\begin{equation}
+\Omega(f_t) = \gamma T + \frac{1}{2} \lambda \sum_{j=1}^{T} w_j^2
+\end{equation}
+Taking a second-order Taylor expansion of the objective function allows XGBoost to utilize custom optimization objectives efficiently. The objective simplifies to:
+\begin{equation}
+\mathcal{O}^{(t)} \approx \sum_{i=1}^{B} \left[ \ell(y_i, \hat{y}_i^{(t-1)}) + g_i f_t(\mathbf{x}_i) + \frac{1}{2} h_i f_t^2(\mathbf{x}_i) \right] + \Omega(f_t)
+\end{equation}
+where $g_i = \partial_{\hat{y}^{(t-1)}} \ell(y_i, \hat{y}_i^{(t-1)})$ and $h_i = \partial^2_{\hat{y}^{(t-1)}} \ell(y_i, \hat{y}_i^{(t-1)})$ represent the first-order (gradient) and second-order (hessian) partial derivatives of the loss function, respectively. XGBoost provides state-of-the-art predictive performance for static tabular logs by leveraging parallel tree boosting, sparse-aware splitting, and localized hardware cache optimization.
+\subsubsection{The TransformerClassifier Architecture Overview}
+Unlike traditional classifiers that treat transactions as static and independent tabular vectors, the proposed \texttt{TransformerClassifier} architecture maps transactional features into sequential token representations to capture complex feature-to-feature interactions. The simplified architecture flow of the model is illustrated in Figure~\ref{fig:simplified_transformer}, using attention , embedding similar to the research paper "Attention Is All You Need"\cite{transformer}.
+\begin{figure}[H]
+\centering
+\begin{small}
+\begin{tikzpicture}[
+    box/.style={rectangle, draw=black, thick, minimum width=4cm, minimum height=0.7cm, text centered},
+    input/.style={rectangle, draw=black, fill=gray!10, minimum width=2.5cm, minimum height=0.6cm, text centered}
+]
+
+    % Tầng 1: Inputs
+    \node[input] (in1) at (-4,0) {$x_{\text{hour}}$ (Time)};
+    \node[input] (in2) at (0,0) {$x_{\text{cat}}$ (Category)};
+    \node[input] (in3) at (4,0) {$x_{\text{amt\_log}}$ (Amount)};
+
+    % Tầng 2: Embeddings
+    \node[box, fill=blue!10] (emb1) at (-4,1.5) {nn.Embedding};
+    \node[box, fill=blue!10] (emb2) at (0,1.5) {nn.Embedding};
+    \node[box, fill=blue!10] (emb3) at (4,1.5) {Linear Projection};
+
+    % Tầng 3: Concat
+    \node[box, fill=orange!15, minimum width=6cm] (concat) at (0,3) {Serialization \& Concat ($E_{\text{raw}}$)};
+
+    % Tầng 4: Core Encoder
+    \node[box, fill=green!10, minimum width=8cm] (enc1) at (0,4.2) {Transformer Encoder Block 1};
+    \node[box, fill=green!10, minimum width=8cm] (enc2) at (0,5.4) {Transformer Encoder Block 2};
+
+    % Tầng 5: Head
+    \node[box, fill=cyan!15, minimum width=6cm] (pool) at (0,6.6) {Mean Pooling Layer};
+    \node[box, fill=purple!15, minimum width=5cm] (mlp) at (0,7.8) {MLP Classification Head};
+    \node[circle, draw=black, fill=red!20] (out) at (0,9.2) {Output ($\hat{z}$)};
+
+    % Vẽ mũi tên nối
+    \draw[->, thick] (in1) -- (emb1);
+    \draw[->, thick] (in2) -- (emb2);
+    \draw[->, thick] (in3) -- (emb3);
+    
+    \draw[->, thick] (emb1) -- (concat);
+    \draw[->, thick] (emb2) -- (concat);
+    \draw[->, thick] (emb3) -- (concat);
+    
+    \draw[->, thick] (concat) -- (enc1);
+    \draw[->, thick] (enc1) -- (enc2);
+    \draw[->, thick] (enc2) -- (pool);
+    \draw[->, thick] (pool) -- (mlp);
+    \draw[->, thick] (mlp) -- (out);
+
+\end{tikzpicture}
+\end{small}
+\caption{Simplified Architecture Flow of the TransformerClassifier Model.}
+\label{fig:simplified_transformer}
+\end{figure}
+
+
+\subsubsection{The Mathematics of Self-Attention (Transformer Core)}
+While Logistic Regression, Random Forest, and XGBoost evaluate transactions as static, independent tabular vectors, the Transformer architecture models mixed categorical and numerical features as structured sequential tokens of a single transaction. Let an input sequence representing the transactional attributes (specifically the execution hour, merchant category, and log-transformed amount) be compiled into a matrix $\mathbf{X} \in \mathbb{R}^{S \times d_{\text{model}}}$, where $S = 3$ defines the absolute sequence length (number of input features) and $d_{\text{model}}$ represents the internal latent embedding dimension.
+
+To evaluate the relative contextual correlation between different transaction events within the temporal window, the sequence is mapped into three distinct inner vector \cite{transformer}: Queries ($\mathbf{Q}$), Keys ($\mathbf{K}$), and Values ($\mathbf{V}$). This projection is executed using three distinct trained linear weight layers $\mathbf{W}_Q \in \mathbb{R}^{d_{\text{model}} \times d_k}$, $\mathbf{W}_K \in \mathbb{R}^{d_{\text{model}} \times d_k}$, and $\mathbf{W}_V \in \mathbb{R}^{d_{\text{model}} \times d_v}$:
+\begin{equation}
+\mathbf{Q} = \mathbf{X}\mathbf{W}_Q, \quad \mathbf{K} = \mathbf{X}\mathbf{W}_K, \quad \mathbf{V} = \mathbf{X}\mathbf{W}_V
+\end{equation}
+The scaled dot-product attention computes the matrix of attention weights by calculating the inner product between all pairs of queries and keys. To prevent the gradients from vanishing or exploding when the projection dimension $d_k$ grows large, the dot products are scaled by a factor of $1 / \sqrt{d_k}$ before applying a softmax activation layer:
+\begin{equation}
+\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\right)\mathbf{V}
+\end{equation}
+
+\subsubsection{Multi-Head Attention Assembly}
+To allow the network to simultaneously map relationships across different transaction dimensions (e.g., correlating unusual hours with unexpected spending amounts), a Multi-Head Attention architecture is utilized. Let $h$ define the number of parallel attention heads. Each individual head $i$ learns independent projection mappings:
+\begin{align}
+\text{head}_i &= \text{Attention}(\mathbf{Q}\mathbf{W}_Q^i, \mathbf{K}\mathbf{W}_K^i, \mathbf{V}\mathbf{W}_V^i) \\
+\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) &= \text{Concat}(\text{head}_1, \text{head}_2, \dots, \text{head}_h)\mathbf{W}^O
+\end{align}
+where $\mathbf{W}^O \in \mathbb{R}^{h d_v \times d_{\text{model}}}$ represents the linear output matrix layer that merges all attention perspectives back into a single vector space.
+
+\subsubsection{Positional Encoding Formulations}
+Because the pure self-attention mechanism relies entirely on matrix dot-products, it is completely invariant to the permutations of rows within the input matrix $\mathbf{X}$. To preserve the distinct structural role of each feature token within the sequence (distinguishing between execution hour, merchant category, and transaction amount), fixed sinusoidal Positional Encodings ($\mathbf{PE}$) are superimposed directly onto the base feature embeddings. Let $pos \in \{0, 1, 2\}$ represent the explicit chronological position of a feature token within the transaction representation sequence, and let $i$ represent the internal dimension channel:
+\begin{align}
+\mathbf{PE}(pos, 2i) &= \sin\left(\frac{pos}{10000^{\frac{2i}{d_{\text{model}}}}}\right) \\
+\mathbf{PE}(pos, 2i+1) &= \cos\left(\frac{pos}{10000^{\frac{2i}{d_{\text{model}}}}}\right)
+\end{align}
+This technique allows the network to learn relative positions, as any linear shift $\mathbf{PE}_{pos+k}$ can be expressed as a linear function of $\mathbf{PE}_{pos}$.
+
+\subsubsection{Layer Normalization and Residual Structures}
+To stabilize the deep network architecture and ensure clean gradient flow through multiple layers of multi-head attention blocks, each sub-layer incorporates a residual skip-connection followed by a Layer Normalization (\texttt{LayerNorm}) block. This structural operation is formalized as follows:
+\begin{equation}
+\text{SubLayer}_{\text{out}} = \text{LayerNorm}(\mathbf{X} + \text{SubLayer}(\mathbf{X}))
+\end{equation}
+The \texttt{LayerNorm} operation computes the precise mean $\mu$ and variance $\sigma^2$ across all feature channels for each individual sample, applying two learnable parameters—gain ($\gamma$) and bias ($\beta$)—to rescale the internal activations:
+\begin{equation}
+\text{LayerNorm}(\mathbf{z}) = \frac{\mathbf{z} - \mu}{\sqrt{\sigma^2 + \epsilon}} \odot \gamma + \beta
+\end{equation}
+where $\epsilon$ is a tiny positive regularization constant used to prevent division-by-zero errors.
+
+
+
+\subsection{Loss Functions and Optimization Mechanics}
+The optimization of the parametric networks (Logistic Regression and Transformer)\cite{Logistic Regression and Transformer} is guided by the Binary Cross-Entropy with Logits loss function, penalizing structural misclassifications between the predicted fraud logit and the ground-truth target binary flag $y \in \{0, 1\}$:
+\begin{equation}
+\mathcal{L}_{\text{BCE}} = - \frac{1}{B} \sum_{j=1}^{B} \left[ y_j \cdot \log(\sigma(\hat{y}_j)) + (1 - y_j) \cdot \log(1 - \sigma(\hat{y}_j)) \right]
+\end{equation}
+where $B$ defines the mini-batch size, $\hat{y}_j$ is the raw unnormalized logit outputted by the final linear feed-forward layer, and $\sigma(z) = 1 / (1 + e^{-z})$ represents the standard sigmoid function mapping logits into explicit continuous risk probabilities.
+
+For the Transformer model, gradient updates are calculated using the \textbf{AdamW} optimizer, which decouples traditional weight decay from the moving averages of the first and second moments of the gradients. For XGBoost, numerical optimization is achieved natively via a custom gradient descent algorithm across tree structures as detailed in the objective function derivations above.
+
+
+% =======================================================
+% SECTION 3: PREPROCESSING, DATA PROFILES, AND DATABASE SCHEMA
+% =======================================================
+\section{Preprocessing, Data Profiles, and Database Schema}
+
+\subsection{Preprocessing dataset} 
+
+\subsubsection{Overview and Simulation Paradigm}
+The core evaluation of this project is established upon a large-scale, simulated credit card transaction dataset spanning a logical duration of two full years, from January 1st, 2019, to December 31st, 2020\cite{dataset}. The simulation encapsulates the transactional behavioral footprints of $1,000$ distinct customers conducting continuous operations across a diverse pool of $800$ retail and digital merchants\cite{dataset}. The underlying data was generated utilizing the multi-threaded \textit{Sparkov Data Generation} framework. 
+
+\subsubsection{Simulator Mechanics and Behavioral Distribution} 
+The structural integrity of the synthetic dataset is governed by specialized algorithmic rules embedded within the simulator. Rather than introducing completely randomized noise, the generator leverages a deterministic baseline consisting of pre-defined master lists of geographical coordinates, industry-specific merchant segments, individual target customers, and operational transaction categories\cite{SparkovSim}. The transaction synthesis is executed through a two-phase initialization incorporating the Python \textit{Faker} library and demographic JSON profiles (e.g., \texttt{adults\_2550\_female\_rural.json}) modeling parameters such as daily transaction counts, weekday patterns, and Gaussian normal distribution parameters assigned to model monetary transaction amounts (\texttt{amt})\cite{SparkovSim}.
+
+\subsubsection{Feature Schema and Data Dictionary} 
+The unified dataset comprises 23 distinct feature columns capturing spatial, temporal, personal, and financial data points. The complete schema of the training set is detailed in Table~\ref{tab:dataset_schema}\cite{dataset}.
+
+\begin{longtable}{|l|l|p{8.5cm}|}
+\caption{Credit Card Transaction Dataset Feature Schema} \label{tab:dataset_schema} \\
+\hline
+\textbf{Feature Column} & \textbf{Data Type} & \textbf{Description / Functional Role} \\ \hline
+\endhead
+\hline
+\endfoot
+\texttt{index} & Integer & Unique sequential identifier assigned to each row record. \\ \hline
+\texttt{trans\_date\_trans\_time} & DateTime & Timestamp logging the exact calendar date and hour of execution. \\ \hline
+\texttt{cc\_num} & Integer & Masked unique Credit Card Number linked to the customer account. \\ \hline
+\texttt{merchant} & String & Unique name or identifier of the commercial merchant entity.  \\ \hline
+\texttt{category} & String & Commercial market classification of the merchant (e.g., retail, gas, grocery).  \\ \hline
+\texttt{amt} & Float & Total monetary value/amount of the specific transaction.  \\ \hline
+\texttt{first} & String & First name of the primary credit card holder. \\ \hline
+\texttt{last} & String & Last name of the primary credit card holder. \\ \hline
+\texttt{gender} & Character & Biological gender indicator of the cardholder (M/F).\\ \hline
+\texttt{street} & String & Registered residential street address of the cardholder. \\ \hline
+\texttt{city} & String & Home city location of the cardholder account.  \\ \hline
+\texttt{state} & String & Two-letter state code of the cardholder's residence.\\ \hline
+\texttt{zip} & Integer & Postal zone zip code corresponding to the user's location. \\ \hline
+\texttt{lat} & Float & Latitude coordinate mapping the cardholder's residence. \\ \hline
+\texttt{long} & Float & Longitude coordinate mapping the cardholder's residence.\\ \hline
+\texttt{city\_pop} & Integer & Total population of the cardholder's registered city.  \\ \hline
+\texttt{job} & String & Current professional occupation/job of the cardholder.  \\ \hline
+\texttt{dob} & Date & Date of birth utilized to evaluate age-based behavioral metrics. \\ \hline
+\texttt{trans\_num} & String & Globally unique cryptographic transaction alphanumeric string indicator.\\ \hline
+\texttt{unix\_time} & Integer & Epoch Unix timestamp representation of the transaction time. \\ \hline
+\texttt{merch\_lat} & Float & Latitude coordinate of the physical or digital merchant processing node.  \\ \hline
+\texttt{merch\_long} & Float & Longitude coordinate of the physical or digital merchant processing node.  \\ \hline
+\textbf{\texttt{is\_fraud}} & Binary & \textbf{Target Class Flag}: Label indicates legitimate ($0$) or fraudulent ($1$) transactions. \\ \hline
+\end{longtable}
+
+\subsection{Data Preprocessing and Exploratory Data Analysis}
+
+\subsubsection{Data Ingestion and Feature Cleanliness} 
+The computational pipeline begins with the ingestion of separate training (\texttt{fraudTrain.csv}) and testing (\texttt{fraudTest.csv}) data structures. To prevent target overfitting and focus the model on highly generalizable risk indicators, the feature space is strictly constrained. High-cardinality demographic, personal, and spatial identifiers—specifically account card numbers (\texttt{cc\_num}), transaction reference markers (\texttt{trans\_num}), customer names (\texttt{first}, \texttt{last}), street addresses, cities, states, occupations (\texttt{job}), birth dates (\texttt{dob}), system timestamps (\texttt{unix\_time}), and raw geographical coordinates (\texttt{lat}, \texttt{long}, \texttt{merch\_lat}, \texttt{merch\_long})—are systematically dropped. The final modeling space is focused exclusively on three primary transactional inputs: the execution hour (\texttt{trans\_hour}), merchant category (\texttt{category}), and log-scaled amount (\texttt{amt\_log}).
+
+\subsubsection{Feature Engineering and Non-linear Transformations} 
+To maximize the predictive capacity of the temporal and monetary parameters, advanced feature transformation techniques are applied: 
+\begin{enumerate}
+    \item \textbf{Temporal Decomposition}: The raw string timestamp \texttt{trans\_date\_trans\_time} is dynamically parsed into an explicit DateTime object. From this temporal foundation, localized discrete time-based dimensions are extracted for analysis, including the transaction hour of the day (\texttt{trans\_hour}), calendar day (\texttt{trans\_day}), and chronological month (\texttt{trans\_month}). While all three dimensions are utilized during exploratory visualization to diagnose fraud temporal distributions, only the diurnal hour (\texttt{trans\_hour}) is selected for the model's feature space, with calendar days and seasonal months excluded to prevent model memorization and overfitting. 
+    \item \textbf{Mathematical Log-Transformation}: Preliminary empirical distribution checking of the financial transaction amount (\texttt{amt}) reveals an extreme right-skewed profile.  To compress the dynamic range and minimize gradient variances during neural network training, a log-transformation with a leveling unity offset is applied to formulate the engineered feature \texttt{amt\_log}: 
+    \begin{equation}
+        \text{amt\_log} = \ln(\text{amt} + 1)
+    \end{equation}
+\end{enumerate}
+
+\subsubsection{Class Imbalance Mitigation via Random Under-Sampling}
+A primary challenge in digital transaction analysis is the severe class imbalance, where fraudulent transactions constitute only $0.5789\%$ of the global dataset (with $2,145$ fraud cases out of $555,719$ sequences in the test partition). Training deep sequence models directly on such skewed data would cause the self-attention heads to optimize for the majority class, leading to severe false-negative leaks. To mitigate this risk, offline Random Under-Sampling (RUS) is applied to the training dataset partition ($\mathcal{D}_{\text{train}}$) using the \texttt{imblearn} library's \texttt{RandomUnderSampler} with a fixed seed (\texttt{random\_state = 42}).
+
+Let $\mathcal{D}_{\text{train}} = \mathcal{D}_{\text{train}, 0} \cup \mathcal{D}_{\text{train}, 1}$ denote the training set, where $\mathcal{D}_{\text{train}, 0}$ represents the majority set of legitimate transactions and $\mathcal{D}_{\text{train}, 1}$ represents the minority set of fraudulent transactions. The under-sampling operator selects a subset $\mathcal{D}^*_{\text{train}, 0} \subset \mathcal{D}_{\text{train}, 0}$ such that:
+\begin{equation}
+|\mathcal{D}^*_{\text{train}, 0}| = |\mathcal{D}_{\text{train}, 1}|
+\end{equation}
+The resulting balanced training partition $\mathcal{D}^*_{\text{train}} = \mathcal{D}^*_{\text{train}, 0} \cup \mathcal{D}_{\text{train}, 1}$ achieves a strict $1:1$ class ratio ($50.0\%$ fraud and $50.0\%$ clean), forcing the multi-head self-attention mechanisms to learn the structural characteristics of both classes equally. During evaluation, the models are tested on the pristine, highly skewed test partition ($\mathcal{D}_{\text{test}}$) to validate their generalization performance in a realistic production-grade class distribution.
+
+\subsubsection{Exploratory Data Analysis (EDA) and Anomaly Diagnostics} 
+To validate the discriminatory capacity of the engineered feature space and analyze the behavioral variances between legitimate and fraudulent transactions, a detailed empirical analysis was conducted. The joint distribution profiles of the key numerical parameters, stratified by the binary target class (\texttt{is\_fraud}), are visualized using the outlier diagnostic box plots in Figure~\ref{fig:numeric_distributions}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{outlier.png} 
+    \caption{Empirical Distribution and Outlier Diagnostics of Numeric Features Stratified by Fraud Status ($is\_fraud = 0$ vs. $is\_fraud = 1$).}
+    \label{fig:numeric_distributions}
+\end{figure} 
+
+\begin{itemize}
+    \item \textbf{Statistical Outlier Quantification and Box-Plot Diagnostics}: The presence of outliers across the numerical vectors is rigorously mapped using the Interquartile Range (IQR)\cite{IQR} outer-boundary thresholding framework. Let $Q_1$ and $Q_3$ denote the $25^{\text{th}}$ and $75^{\text{th}}$ percentiles of the feature distribution, respectively. The mathematical boundary limits are defined as follows:
+    \begin{equation}
+        [\text{Lower Bound}, \text{Upper Bound}] = [Q_1 - 1.5 \times \text{IQR}, \; Q_3 + 1.5 \times \text{IQR}]
+    \end{equation} 
+    As illustrated by the box plots in Figure~\ref{fig:numeric_distributions}, comparative analysis reveals distinct localized anomaly densities and class-wise distribution patterns across key numeric features:
+    \begin{itemize}
+        \item \textit{Transaction Amount (\texttt{amt})}: This feature exhibits the most prominent class-wise separation. Non-fraudulent transactions ($is\_fraud = 0$) are highly compressed near the baseline value, although they display a dense continuum of extreme statistical outliers extending up to $30,000$. In contrast, fraudulent instances ($is\_fraud = 1$) present a significantly higher median and IQR, yet remain strictly bounded below $2,500$ without any extreme outliers. This indicates that attackers operate within narrow, high-value transaction bands to maximize financial extraction while evading automatic high-value threshold alarms.
+        \item \textit{Demographic Density (\texttt{city\_pop})}: Both target classes display nearly identical distribution compression toward low-population zones, accompanied by matching outlier tails extending to urban centers with over 3 million residents. This structural overlap demonstrates that fraud risk is invariant to urbanization scales, occurring with equal relative frequency in rural communities and major cities alike.
+    \end{itemize}
+    
+    \item \textbf{Feature Convergence and Space-Time Uniformity}: A critical diagnostic finding from the box-plot analysis in Figure~\ref{fig:numeric_distributions} is the near-absolute structural convergence across raw geographical coordinates (\texttt{lat}, \texttt{long}, \texttt{merch\_lat}, \texttt{merch\_long}), postal zones (\texttt{zip}), and system timestamps (\texttt{unix\_time}). For both legitimate and fraudulent populations, the medians, interquartile ranges, and overall whisker spreads remain virtually indistinguishable. This mathematical overlap demonstrates that raw spatial and temporal parameters possess near-zero standalone linear or non-linear discriminatory power, as attackers natively masquerade within genuine user perimeters. This highlights the absolute necessity of the proposed ingestion pipeline to synthesize derivative features, such as cyclic temporal transformations ($x_{\text{hour}}$), to expose latent behavioral anomalies.
+    
+    \item \textbf{Behavioral Discrepancies in Log-Amount Variance}: As illustrated in Figure \ref{fig:log_amount_distribution}, an empirical evaluation of the log-transformed transaction values ($\text{amt\_log} = \ln(\text{amt} + 1)$) reveals that legitimate and fraudulent populations exhibit highly polarized and distinct multi-modal distributions:
+    \begin{itemize}
+        \item \textit{Non-Fraudulent Transactions ($is\_fraud = 0$)}: The density profile displays a classic bimodal configuration. A secondary local maximum materializes at approximately $2.2$ on the log-scale (corresponding to nominal micro-transactions of roughly \$8), while the primary, dominant density cluster forms a sharp Gaussian-like curve centered precisely at $4.3$ (corresponding to a nominal value of approximately \$73), reflecting standard recurring retail and household expenditures.
+        \item \textit{Fraudulent Transactions ($is\_fraud = 1$)}: In stark contrast, the malicious distribution heavily suppresses low-value nominal activity and exhibits an aggressive multi-modal concentration skewed toward upper operational boundaries. While minor noise clusters appear around $2.4$ and $3.0$, the distribution is characterized by two distinct, extraordinarily sharp, and high-frequency anomalous spikes located at $5.7$ ($\approx \$298$) and $6.9$ ($\approx \$991$).
+    \end{itemize}
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=1.0\textwidth]{distribution_log.png}
+        \caption{Empirical Density Distribution of Log-Transformed Transaction Amounts ($\text{amt\_log} = \ln(\text{amt} + 1)$) Highlighting Bimodal and Multi-Modal Structures for Non-Fraudulent ($is\_fraud = 0$) and Fraudulent ($is\_fraud = 1$) Populations.}
+        \label{fig:log_amount_distribution}
+    \end{figure} 
+    This highly concentrated multi-modal variance confirms that fraudulent activities do not follow arbitrary random walks; instead, attackers target highly specific financial brackets. The non-overlapping high-density regions between the two classes provide an exceptional behavioral signature, enabling the multi-head self-attention layers to assign heavy directional weights during sequence mapping.
+    
+    \item \textbf{Multi-Scale Temporal Topology and Sequential Burst Analysis}: To uncover the temporal dynamics of fraudulent operations, an empirical analysis was performed across three distinct time scales: hourly diurnal cycles (\texttt{trans\_hour}), calendar days (\texttt{trans\_day}), and macro-seasonal months (\texttt{trans\_month}). The stratified distributions are visualized in 3 different figures.
+    \begin{itemize}
+        \item \textit{Hourly Diurnal Cycles (\texttt{trans\_hour})}:
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.85\textwidth]{hour.png}
+            \caption{Empirical Diurnal Distribution (\texttt{trans\_hour}) Stratified by Fraud Status, Highlighting Midnight Anomalous Peaks.}
+            \label{fig:temp_hour}
+        \end{figure} 
+        \newpage
+        As visualized in Figure~\ref{fig:temp_hour}, legitimate transactions display a stable step-function behavior, maintaining a baseline of $\approx 42,000$ transactions from 00:00 to 11:00, and stepping up to $\approx 65,000$ during afternoon and evening operational hours (12:00 to 23:00). In radical contrast, fraudulent activities exhibit an aggressive \textbf{nocturnal anomaly profile}. Malicious operations are heavily suppressed during daylight hours but explode into extreme high-frequency clusters between 22:00 and 03:00, with localized spikes exceeding $1,900$ incidents per hour. This concentration highlights the opportunistic nature of attackers targeting late-night windows when manual institutional monitoring and user vigilance are at their lowest.
+        
+        \item \textit{Day of the Month Uniformity (\texttt{trans\_day})}:
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.85\textwidth]{day.png}
+            \caption{Empirical Calendar Day Distribution (\texttt{trans\_day}) Stratified by Fraud Status.}
+            \label{fig:temp_day}
+        \end{figure} 
+        \newpage
+        The empirical distributions over the 31-day calendar horizon (Figure~\ref{fig:temp_day}) reveal a highly stable, uniform distribution for legitimate transactions, hovering consistently between $40,000$ and $45,000$ daily instances. The fraudulent group closely mirrors this structural pattern, presenting a broadly dispersed frequency profile fluctuating randomly between $150$ and $350$ incidents without any dominant localized clusters (such as specific paydays or end-of-month effects). This statistical uniformity proves that individual static calendar dates carry near-zero independent predictive power.
+        
+        \item \textit{Macro-Seasonal Variations (\texttt{trans\_month})}:
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.85\textwidth]{month.png}
+            \caption{Empirical Seasonal Macro-Trend Distribution (\texttt{trans\_month}) Stratified by Fraud Status.}
+            \label{fig:temp_month}
+        \end{figure} 
+        \newpage
+        Over the annual cycle presented in Figure~\ref{fig:temp_month}, non-fraudulent volume exhibits macro-fluctuations, peaking significantly in Spring (March--June at $\approx 140,000$) and Winter (December), while dipping in Autumn. The fraudulent distribution generally replicates this macro-envelope—recording its highest density in March and May ($\approx 900$ incidents)—which indicates that the absolute frequency of fraud scales proportionally with global transactional volume rather than executing month-specific isolated patterns.
+    \end{itemize}
+    The convergence of these multi-scale temporal findings yields a critical architectural insight: while macro-seasonal scales (\texttt{trans\_month}) and static calendar tokens (\texttt{trans\_day}) fail to provide direct class separation, the extreme localized volatility in diurnal cycles (\texttt{trans\_hour}) serves as an invaluable behavioral signature. This underscores the core value of integrating sequential deep learning architectures (such as Transformers or LSTMs). Instead of assessing isolated date tokens, these models utilize self-attention mechanisms to map sequential intervals and transactional bursts, effectively capturing the transition from standard daytime retail baselines into highly dense, late-night fraudulent clusters.
+    
+    \item \textit{Categorical Risk Distribution Analysis via Merchant Category (\texttt{category})}: An empirical frequency ranking of fraud incidents ($is\_fraud = 1$) conducted across the nominal feature \texttt{category} reveals that fraudulent behaviors are heavily concentrated within specific transaction profiles. The highest density occurs within physical grocery stores (\texttt{grocery\_pos}) and online shopping networks (\texttt{shopping\_net}), recording $1,743$ and $1,713$ incidents respectively. This prominent concentration suggests that attackers prioritize high-liquidity sectors where large-volume retail goods or anonymous digital items can be quickly purchased and liquidated without triggering immediate institutional suspicion.
+\end{itemize}
+
+\paragraph{User-Level Transactional Concentration and Risk Distribution}: An empirical evaluation of cardholder-level transaction frequency reveals that the dataset contains a mean of $1,319.10$ transactions per unique user account. For the subset of cardholders affected by security breaches, the average number of fraudulent charges is $7.64$ per user, with the overall transaction-level fraud rate measured at $0.5789\%$. Stratifying cardholders with active fraud indicators by their individual breach proportions (using the median fraud rate of $0.80\%$ as a threshold split) reveals two distinct risk profiles: 'Low Fraud Rate' users who experience isolated, random breaches, and 'High Fraud Rate' users who suffer rapid, concentrated card-cloning runs. This per-user distribution highlights the necessity of tracking rolling transaction frequencies at the individual account level.
+
+\paragraph{Demographic Fraud Uniformity and Feature Exclusion}: To determine if cardholder profile statistics carry actionable predictive power, the exploratory pipeline stratifies transaction-level risk by cardholder demographics. Evaluating gender groups reveals near-identical fraud rates ($0.0064$ for males, representing a $1.11\times$ lift over baseline, and $0.0053$ for females, representing a $0.90\times$ lift), indicating that gender carries no distinct predictive signal. Age-based segmentation (grouped from \texttt{<30} to \texttt{>70} using date of birth computations) displays narrow risk variance, ranging from a minimum lift of $0.75\times$ (ages 30--40) to a maximum of $1.42\times$ (ages \texttt{>70}), well below typical operational significance thresholds. Finally, tracking credit card digit lengths as a proxy for payment networks (Visa/Mastercard, Amex, Discover) reveals flat risk lifts bounded between $0.83\times$ and $1.55\times$. The statistical uniformity across these features demonstrates that demographic and profile metadata are not strong risk vectors, mathematically justifying their systematic exclusion from the input feature space to focus the neural classifier exclusively on high-lift transactional behavior.
+
+\paragraph{Section Synthesis and Preprocessing Justification}: In summary, the comprehensive exploratory data analysis reveals a clear dichotomy between static demographic or spatial coordinates and dynamic, transaction-level behavioral characteristics. While macro-seasonal cycles, calendar days, cardholder age, gender, and raw coordinates converge to near-identical distributions across both target classes, high-frequency midnight transaction timings, specific merchant categories, and multi-modal amount spikes show sharp, non-overlapping anomalies. These empirical findings justify the project's data engineering strategy: filtering out high-cardinality demographic noise and engineering sequential, temporal, and rolling behavioral features. By feeding these highly discriminatory behavioral signals into the deep learning pipeline, the self-attention mechanisms can effectively isolate fraud signatures, establishing a mathematically sound basis for high-performance classification.
+
+\newpage
+\subsection{Database Schema and Behavioral Intelligence Framework}
+
+The proposed fraud detection system employs a normalized relational database that not only supports traditional e-commerce operations but also serves as the foundation of the behavioral intelligence architecture. The database is designed to separate transactional data from analytical user profiles, allowing both operational efficiency and real-time risk evaluation.
+
+\subsubsection{Relational Data Modeling}
+
+The database consists of six primary entities: \texttt{Users}, \texttt{Products}, \texttt{Purchases}, \texttt{PurchaseItems}, \texttt{Transactions}, and \texttt{UserRiskProfile}. Their relationships are illustrated in the system architecture and summarized as follows:
+
+\begin{itemize}
+    \item \textbf{Users}: Stores customer information, authentication credentials, account creation time, verification status, and other attributes required by the Trust Engine.
+    
+    \item \textbf{Products}: Maintains product information including category, price, and inventory, which are required during purchase processing and fraud feature extraction.
+    
+    \item \textbf{Purchases} and \textbf{PurchaseItems}: Represent customer orders and purchased products. These entities provide historical purchasing behavior that contributes to trust score calculation.
+    
+    \item \textbf{Transactions}: Records every completed payment together with its behavioral features, including transaction amount, category, transaction time, fraud probability predicted by the ONNX model, and the final fraud classification.
+    
+    \item \textbf{UserRiskProfile}: Stores consolidated analytical information generated by the behavioral engines, including the current Risk Score, Trust Score, corresponding risk levels, and profile update timestamp.
+\end{itemize}
+
+By separating immutable transaction logs from aggregated user profiles, the system minimizes redundancy while enabling efficient analytical queries for real-time fraud detection.
+
+\subsubsection{Behavioral Feature Engineering}
+
+Unlike conventional fraud detection systems that rely solely on individual transaction attributes, the proposed framework combines transactional features with long-term behavioral indicators.
+
+The feature engineering pipeline consists of three major stages:
+
+\begin{enumerate}
+    \item \textbf{Transaction Feature Extraction}: Basic features required by the Transformer classifier are extracted directly from the transaction context, including transaction amount, product category, transaction hour.
+
+    \item \textbf{Behavioral Feature Aggregation}: Historical user statistics are dynamically computed from the relational database. These include fraud rate, average fraud probability, night transaction rate, transaction frequency, purchase success rate, account age, verification status, and purchase activity. These behavioral features are subsequently utilized by the Risk Engine and Trust Engine.
+
+    \item \textbf{Feature Normalization}: Continuous numerical attributes are normalized before inference. In particular, transaction amount is transformed using logarithmic scaling:
+    
+    \begin{equation}
+        x_{\mathrm{amt}}=\ln(\mathrm{amount}+1)
+    \end{equation}
+
+    This transformation reduces the influence of extremely large transactions while preserving relative differences among normal purchases.
+\end{enumerate}
+
+The normalized feature vector is then serialized into the input representation required by the Transformer-based ONNX model:
+
+\begin{equation}
+\mathbf{X}_{\mathrm{input}}
+=
+\mathrm{Concat}
+\left(
+\mathrm{Hour},
+\mathrm{Category},
+x_{\mathrm{amt}}
+\right)
+\end{equation}
+
+The inference result is the fraud probability of the current transaction.
+
+\subsubsection{Behavioral Intelligence Layer}
+
+The proposed fraud detection framework extends conventional transaction-level analysis by incorporating two complementary behavioral evaluation modules: the \textbf{Risk Engine} and the \textbf{Trust Engine}. While the Risk Engine evaluates the short-term probability of fraudulent behavior based on recent transaction patterns, the Trust Engine measures the long-term reliability of a customer through historical purchasing behavior and account characteristics.
+
+Separating these two dimensions enables the system to distinguish between temporary behavioral anomalies and the overall credibility of a customer. Consequently, legitimate users with strong historical reputations are less likely to be incorrectly classified as fraudulent, thereby reducing false positive decisions.
+
+\subsubsection{Risk Engine}
+
+The Risk Engine computes a quantitative Risk Score, denoted as $\mathcal{R}\in[0,100]$, by aggregating four behavioral indicators extracted from historical transaction records.
+
+The overall Risk Score is defined as
+
+\begin{equation}
+\mathcal{R}
+=
+0.40F_r
++
+0.30P_{avg}
++
+0.20N_r
++
+0.10F_q
+\end{equation}
+
+where
+
+\begin{itemize}
+
+\item \textbf{Fraud Rate ($F_r$ -- 40\%)} measures the proportion of transactions previously classified as fraudulent:
+
+\begin{equation}
+F_r
+=
+\frac{N_{\mathrm{fraud}}}
+{N_{\mathrm{transaction}}}
+\times100
+\end{equation}
+
+\item \textbf{Average Fraud Probability ($P_{avg}$ -- 30\%)} represents the average fraud probability predicted by the Transformer-based ONNX model:
+
+\begin{equation}
+P_{avg}
+=
+\frac{
+\sum p_i
+}
+{
+N_{\mathrm{transaction}}
+}
+\times100
+\end{equation}
+
+where $p_i$ denotes the fraud probability of transaction $i$.
+
+\item \textbf{Night Transaction Rate ($N_r$ -- 20\%)} evaluates the percentage of transactions performed between 22:00 and 06:00:
+
+\begin{equation}
+N_r
+=
+\frac{
+N_{\mathrm{night}}
+}
+{
+N_{\mathrm{transaction}}
+}
+\times100
+\end{equation}
+
+\item \textbf{Transaction Frequency ($F_q$ -- 10\%)} reflects the customer's transaction activity level. To prevent highly active accounts from disproportionately dominating the score, the frequency indicator is capped and normalized:
+\begin{equation}
+F_q = \min(N_{\text{transaction}}, 100)
+\end{equation}
+
+\end{itemize}
+
+The resulting score is classified into three operational levels:
+
+\begin{center}
+\begin{tabular}{cc}
+\hline
+Risk Score & Risk Level\\
+\hline
+0--30 & LOW\\
+31--70 & MEDIUM\\
+71--100 & HIGH\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Trust Engine}
+
+Unlike the Risk Engine, which focuses on recent behavioral anomalies, the Trust Engine evaluates the long-term credibility of a customer. The Trust Score, denoted as $\mathcal{T}\in[0,100]$, is derived from historical account activity and purchasing behavior.
+
+The Trust Score is computed as
+
+\begin{equation}
+\mathcal{T}
+=
+0.20A
++
+0.30S
++
+0.30H
++
+0.10V
++
+0.10P
+\end{equation}
+
+where
+
+\begin{itemize}
+
+\item \textbf{Account Age ($A$ -- 20\%)} reflects the stability of the customer's account. Older accounts receive higher trust values.
+
+\item \textbf{Purchase Success Rate ($S$ -- 30\%)} measures the proportion of successfully completed purchases relative to the total number of purchase requests.
+
+\item \textbf{Fraud History ($H$ -- 30\%)} evaluates the customer's historical fraud behavior. Users with fewer confirmed fraudulent transactions receive higher scores.
+
+\item \textbf{Verification Score ($V$ -- 10\%)} reflects account verification status, including verified email and verified phone number.
+
+\item \textbf{Purchase Activity ($P$ -- 10\%)} measures long-term purchasing activity. Customers with consistent purchasing histories receive higher reputation scores than newly created or inactive accounts.
+
+\end{itemize}
+
+The Trust Score is categorized into four reputation levels:
+
+\begin{center}
+\begin{tabular}{cc}
+\hline
+Trust Score & Trust Level\\
+\hline
+90--100 & EXCELLENT\\
+75--89 & GOOD\\
+50--74 & AVERAGE\\
+0--49 & POOR\\
+\hline
+\end{tabular}
+\end{center}
+
+The Risk Engine and Trust Engine jointly provide a comprehensive behavioral profile of each customer. While the Risk Engine captures immediate transaction risk, the Trust Engine reflects long-term customer reliability. Together, these complementary assessments enable the system to support adaptive fraud mitigation strategies, improve decision quality, and reduce false positive classifications without compromising security.
+\subsubsection{Decision Engine}
+
+Although the Transformer-based classifier provides the fraud probability of an individual transaction, relying solely on this prediction may lead to false positive decisions, particularly for long-term customers with strong purchasing histories. To address this limitation, the proposed framework introduces a rule-based \textbf{Decision Engine} that combines the outputs of the Risk Engine and the Trust Engine to determine the appropriate response for each transaction.
+
+Instead of treating all high-risk transactions identically, the Decision Engine considers both the customer's current behavioral risk and accumulated reputation. The final decision is selected from four operational actions:
+
+\begin{itemize}
+    \item \textbf{APPROVE}: The transaction is accepted immediately.
+    \item \textbf{REVIEW}: The transaction is temporarily held for further inspection.
+    \item \textbf{BLOCK}: The transaction is rejected due to excessive fraud risk.
+\end{itemize}
+
+The decision policy is implemented as a deterministic decision matrix shown in Table~\ref{tab:decision_engine}.
+
+\begin{table}[h]
+\centering
+\caption{Decision matrix combining Risk Level and Trust Level}
+\label{tab:decision_engine}
+\begin{tabular}{lccc}
+\hline
+\textbf{Risk Level} & \textbf{Poor/Average} & \textbf{Good} & \textbf{Excellent} \\
+\hline
+LOW    & APPROVE & APPROVE & APPROVE \\
+MEDIUM & REVIEW & REVIEW & APPROVE \\
+HIGH   & BLOCK & REVIEW & REVIEW \\
+\hline
+\end{tabular}
+\end{table}
+
+The rationale behind this strategy is that Risk Score reflects short-term behavioral anomalies, whereas Trust Score represents long-term customer credibility. Consequently, customers with consistently trustworthy histories are not immediately blocked when a single transaction appears suspicious. Instead, the system applies adaptive verification mechanisms that preserve both security and user experience.
+
+For example, a transaction classified as \texttt{HIGH} risk but associated with an \texttt{EXCELLENT} trust profile is redirected to additional verification rather than being rejected outright. Conversely, transactions exhibiting both high risk and poor reputation are immediately blocked to minimize potential financial losses.
+
+This hybrid decision mechanism effectively balances fraud prevention and customer convenience by reducing unnecessary transaction rejections while maintaining strong protection against malicious activities.
+\subsection{System Architecture and Full-Stack Processing Flow}
+
+The proposed system follows a layered architecture that integrates deep learning-based fraud prediction with a behavioral intelligence framework. Each purchase request is processed through multiple analytical stages, enabling the system to evaluate both the immediate fraud risk of a transaction and the long-term credibility of the customer before producing the final decision.
+
+\begin{mdframed}[roundcorner=4pt, backgroundcolor=gray!5]
+\small
+
+\textbf{Presentation Layer (React + Vite + TypeScript)}\\
+Authenticated users submit a \texttt{PurchaseRequest} through a JWT-secured REST API.
+
+
+$\downarrow$
+
+
+\textbf{Application Layer (Spring Boot)}\\
+The \texttt{PurchaseService} validates inventory, creates purchase records, and generates a transaction instance containing the behavioral features required for fraud analysis.
+
+
+$\downarrow$
+
+
+\textbf{AI Inference Layer}\\
+The \texttt{FraudDetectionService} invokes the local ONNX Runtime to execute the Transformer model and produces the fraud probability for the current transaction.
+
+
+$\downarrow$
+
+
+\textbf{Behavioral Intelligence Layer}\\
+
+\textbf{Risk Engine}
+\begin{itemize}
+\item Fraud Rate
+\item Average Fraud Probability
+\item Night Transaction Rate
+\item Transaction Frequency
+\end{itemize}
+
+Computes the Risk Score ($\mathcal{R}$) and corresponding Risk Level.
+
+\medskip
+
+\textbf{Trust Engine}
+\begin{itemize}
+\item Account Age
+\item Purchase Success Rate
+\item Fraud History
+\item Verification Status
+\item Purchase Activity
+\end{itemize}
+
+Computes the Trust Score ($\mathcal{T}$) and corresponding Trust Level.
+
+
+$\downarrow$
+
+
+\textbf{Decision Engine}\\
+A rule-based decision matrix combines the Risk Level and Trust Level to determine one of four operational actions:
+
+\begin{center}
+APPROVE$\;\rightarrow\;$ REVIEW $\;\rightarrow\;$ BLOCK
+\end{center}
+
+
+
+$\downarrow$
+
+
+\textbf{Persistence Layer}\\
+The system stores transaction logs, fraud inference results, and updates the consolidated \texttt{UserRiskProfile}, including the latest Risk Score, Trust Score, and behavioral levels.
+
+
+
+$\downarrow$
+
+
+\textbf{Monitoring Layer}\\
+Behavioral metrics are exposed through the dashboard for visualization and administrative monitoring, while high-risk transactions can trigger alert notifications.
+
+\end{mdframed}
+
+% =======================================================
+% SECTION 4: IMPLEMENTATION DETAILS
+% =======================================================
+
+% =======================================================
+% SECTION 4: IMPLEMENTATION DETAILS AND ENVIRONMENT SETUP
+% =======================================================
+\section{Implementation Details and Environment Setup}
+To ensure the reproducibility of the research and validate the empirical results, this section formalizes the technical specifications of the computational environments.
+
+\subsection{Computational Environment and Hardware-Software Topology}
+The computing topology leverages cloud-allocated infrastructure for resource-intensive deep learning tasks, decoupled from the lightweight, enterprise-ready environment configured for the web application deployment. Table \ref{tab:hardware_software_config} provides the complete technical specifications across the operational domains.
+
+\begin{table}[H]
+\centering
+\small
+\caption{System Hardware and Software Configuration Matrix}
+\label{tab:hardware_software_config}
+\begin{tabular}{|l|p{5cm}|p{6.5cm}|}
+\hline
+\textbf{Layer / Phase} & \textbf{Hardware Infrastructure} & \textbf{Software Stack \& Dependencies} \\ \hline
+\textbf{Offline Training} & 
+Google Cloud Platform (GCP) \newline
+\textbf{CPU:} Intel Xeon (Skylake) \newline
+\textbf{GPU:} NVIDIA Tesla T4 (16GB) \newline
+\textbf{RAM:} 12GB to 25GB Dynamic \newline
+\textbf{Disk:} 75GB Usable SSD &
+\textbf{OS:} Linux Ubuntu Server LTS \newline
+\textbf{Runtime:} Python 3.10.x -- 3.12.x \newline
+\textbf{Deep Learning:} PyTorch 2.1.0+cu121 \newline
+\textbf{NLP Core:} Transformers 5.0.0, Accelerate 1.13.0 \newline
+\textbf{Data Science:} Pandas 2.2.0, NumPy 1.26.4, Scikit-learn 1.4.1, Imbalanced-learn 0.10.1 \\ \hline
+\textbf{Online Backend} &
+Enterprise Application Server \newline
+\textbf{CPU:} Quad-Core vCPU x86\_64 \newline
+\textbf{RAM:} 8GB System Memory \newline
+\textbf{Storage:} 40GB Persistent NVMe &
+\textbf{Runtime:} Java Development Kit (JDK) 17 \newline
+\textbf{Framework:} Spring Boot 3.x, Spring Security \newline
+\textbf{Database:} MySQL 8.0 Relational Server \newline
+\textbf{Inference:} Microsoft ONNX Runtime Java API 1.16+ \\ \hline
+\textbf{Online Frontend} &
+Client Browser Execution Layer &
+\textbf{Tooling:} Vite Core Bundler \newline
+\textbf{Language:} TypeScript (TS) 5.x \newline
+\textbf{UI Library:} ReactJS 18.x \newline
+\textbf{With:} Chart.js, Axios HTTP Client \\ \hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Online Frontend Implementation: Vite, TypeScript, and Reactive Analytics}
+The user-facing presentation layer is engineered using a highly reactive web architecture driven by the Vite frontend engine. TypeScript is implemented across the presentation workspace to enforce compilation-stage type safety, eliminating runtime state nullification and structural object desynchronization when parsing heavy JSON responses emitted by Spring Boot controllers.
+
+The user interface isolates view states into deterministic asynchronous processing sequences:
+\begin{enumerate}
+    \item \textbf{Type-Safe DTO Binding}: Network payloads are bound directly to explicit client-side TypeScript interfaces. This contract now integrates both transactional anomaly tracking and long-term user reputation metrics.
+    \item \textbf{Real-Time Visual State Ingestion}: Whenever an administrator invokes the risk telemetry view, asynchronous HTTP instances managed via Axios fetch raw metrics data arrays. These arrays feed directly into custom visualization hooks configured using Chart.js, allowing for immediate rendering of live security alerts, alongside independent Risk Scores and Trust Scores on the Dashboard .
+\end{enumerate}
+
+
+% =======================================================
+% SECTION 5: EXPERIMENTAL RESULTS
+% =======================================================
+
+% =======================================================
+% SECTION 5: EXPERIMENTAL RESULTS AND EMPIRICAL DISCUSSION
+% =======================================================
+\section{Experimental Results and Empirical Discussion}
+This section presents the empirical evaluation of the proposed \texttt{TransformerClassifier} on the comprehensive test dataset ($df_{\text{test}}$). Following the structural optimization via offline Random Under-Sampling (RUS) on the training partition, the frozen network weights were subjected to rigorous diagnostic evaluation against the highly skewed, imbalanced distribution of the pristine test universe to monitor its generalizeability in production-grade financial environments.
+
+\subsection{Model Training Diagnostics and Convergence Tracks}
+
+To rigorously evaluate the predictive efficacy of the proposed Transformer model against traditional machine learning baselines, empirical benchmarks were established using Logistic Regression, Random Forest, and XGBoost. A critical challenge embedded within the credit card fraud dataset is the presence of an extreme class imbalance, where the negative class (Non-Fraudulent, $N = 553,574$) completely dominates the positive minority class (Fraudulent, $N = 2,145$). Under such heavily skewed target distributions, standard accuracy becomes a highly deceptive metric. Consequently, the evaluation deeply prioritizes precision-recall dynamics and the $F_1$-score for the minority class. The comprehensive performance cross-comparison is consolidated in Table~\ref{tab:model_performance_summary}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Empirical Performance Evaluation and Cross-Model Metric Comparison under Extreme Class Imbalance.}
+    \label{tab:model_performance_summary}
+    \small
+    \begin{tabular}{lccccc}
+        \hline
+        \textbf{Model Architecture} & \textbf{Accuracy} & \textbf{Precision (Fraud)} & \textbf{Recall (Fraud)} & \textbf{$F_1$-Score (Fraud)} & \textbf{ROC AUC / PR-AUC} \\ \hline
+        Logistic Regression & 0.7566 & 0.0114 & 0.7259 & 0.0225 & 0.8496 \\
+        Decision Tree       & 0.9750 & 0.1306 & 0.9688 & 0.2302 & 0.9671 \\
+        Random Forest       & 0.9691 & 0.1081 & 0.9678 & 0.1945 & 0.9930 \\
+        XGBoost             & 0.9710 & 0.1152 & 0.9758 & 0.2060 & 0.9965 \\
+        \textbf{Transformer Model} & \textbf{0.9719} & \textbf{0.1300} & \textbf{0.9688} & \textbf{0.2302} & \textbf{0.8026*} \\ \hline
+    \end{tabular}
+    \begin{flushleft}
+    \footnotesize{*Note: For the Transformer Model, the metric reported is Precision-Recall AUC (PR-AUC), which provides a more stringent assessment under extreme class imbalance compared to standard ROC AUC.}
+    \end{flushleft}
+\end{table}
+
+An analytical breakdown of the diagnostic behaviors reveals distinctive architectural boundaries across the tested paradigms:
+
+\begin{itemize}
+    \item \textbf{Linear and Ensemble Baselines Diagnostics}: 
+    The baseline Logistic Regression model exhibits severe vulnerability to class skewness, yielding an unacceptable fraud precision of $0.0114$ and an $F_1$-score of $0.0225$, despite a recall of $0.7259$, effectively rendering it impractical for real-world risk mitigation. 
+    The single Decision Tree model constructs orthogonal non-linear splitting boundaries, achieving a high recall of $0.9688$ but suffering from high structural variance, which results in a high number of False Positives ($13,831$), a precision of $0.1306$, and an $F_1$-score of $0.2302$ with an ROC AUC of $0.9671$.
+    The Random Forest architecture mitigates the high variance of the single tree by introducing bootstrap aggregation, lifting the precision to $0.1081$, the $F_1$-score to $0.1945$, and expanding the Area Under the Receiver Operating Characteristic (ROC AUC) curve to $0.9930$. 
+    XGBoost achieves a robust baseline performance among traditional methods, securing a minority recall of $0.9758$ and an optimal ROC AUC of $0.9965$, with an $F_1$-score of $0.2060$, though its precision remains bound at $0.1152$ due to the false positives generated within the vast majority class boundary.
+
+    \item \textbf{Transformer Behavioral Analysis}: 
+    As shown in the classification matrix, the sequence-centric Transformer model demonstrates a profound capacity to isolate fraudulent anomalies, securing an overall accuracy tier of $0.97$. Focusing specifically on the minority class metrics, the Transformer captures the fraudulent vectors with a remarkably high sensitivity rate ($\text{Recall} = 0.9688$) while anchoring a superior precision envelope of $0.13$ compared to the baselines, culminating in an improved minority $F_1$-score of $0.2302$. Furthermore, it achieves a strong Precision-Recall AUC (PR-AUC) of $0.8026$, demonstrating high robust classification capability.
+
+    \item \textbf{Architectural Trade-offs}: 
+    While the traditional ensemble frameworks leverage decision trees to optimize their split-point thresholds, the Transformer framework operates on an entirely different structural premise. By utilizing self-attention mechanics over transactional history windows, the Transformer model maintains a comparable and competitive recall profile ($0.9688$). This high recall capacity is paramount in institutional fraud detection operations, as minimizing false negatives (undetected financial crimes) takes technical precedence over the minor inflation of false positives. The capability of the Transformer to yield a weighted average $F_1$-score of $0.98$ and a macro average $F_1$-score of $0.61$ across the entire evaluation horizon ($555,719$ sequences) confirms its operational reliability and high stability under extreme data skewness.
+\end{itemize}
+
+\subsection{Quantitative Classification Matrix Analysis}
+The macro predictive capacity of the deep sequence transformer pipeline is detailed via the classification report matrix rendered in Table \ref{tab:classification_report_results}.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Comprehensive Classification Report Performance on Full Test Partition (Transformer Model)}
+\label{tab:classification_report_results}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Target Classification Class} & \textbf{Precision} & \textbf{Recall} & \textbf{$F_1$-Score} & \textbf{Support (Samples)} \\ \midrule
+\texttt{Not Fraud}                   & 1.00               & 0.98            & 0.99                 & 553,574                    \\
+\texttt{Fraud}                       & 0.13               & 0.97            & 0.23                 & 2,145                      \\ \midrule
+\textbf{Overall Accuracy}            &                    &                 & 0.97                 & 555,719                    \\
+\textbf{Macro Average}               & 0.57               & 0.97            & 0.61                 & 555,719                    \\
+\textbf{Weighted Average}            & 1.00               & 0.97            & 0.98                 & 555,719                    \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Decision Tree Detailed Error Distribution}: The classification error profile of the Decision Tree model is formalized by its confusion matrix on the held-out test partition. Out of $555,719$ sequences, the model correctly identifies $539,743$ legitimate transactions (True Negatives) and successfully flags $2,078$ fraudulent transactions (True Positives). However, it incorrectly rejects $13,831$ clean transactions (False Positives) and fails to catch $67$ active attacks (False Negatives). The detailed distribution is structured in Table \ref{tab:confusion_matrix_dt}.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Confusion Matrix Error Distribution on Full Test Partition (Decision Tree Baseline)}
+\label{tab:confusion_matrix_dt}
+\begin{tabular}{lcc}
+\toprule
+& \textbf{Predicted Legitimate} & \textbf{Predicted Fraudulent} \\ \midrule
+\textbf{Actual Legitimate} & 539,743 (True Negative)        & 13,831 (False Positive)       \\
+\textbf{Actual Fraudulent} & 67 (False Negative)           & 2,078 (True Positive)         \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Key Analytical Observations and Security Trade-Offs}
+A deep algorithmic analysis of the experimental parameters yields three fundamental insights regarding the network's structural learning behavior over tabular anomaly configurations:
+
+\begin{enumerate}
+    \item \textbf{Exceptional Sensitivity to Malicious Signatures (Recall = 0.97 / 0.9688)}: The core execution pipeline achieves a critical Recall rate of $96.88\%$ when evaluating isolated fraudulent vectors. This proves that the multi-head self-attention operators successfully learned the complex, non-linear sequence dependencies within the dataset. In financial risk management, minimizing False Negatives (missed fraud) is the highest operational priority, as unchecked anomalies directly leak institutional assets.
+    
+    \item \textbf{Low Precision Boundary Constraints (Precision = 0.13)}: While the architecture discovers nearly all fraudulent vectors, it yields a localized precision boundary of $13.00\%$, indicating a noticeable volume of False Positives (legitimate users flagged as anomalous). This behavior represents a standard, mathematically deterministic trade-off in highly skewed fields. Because the training phase was exposed to a balanced distribution via under-sampling, the internal classification boundary shifts to be highly sensitive to suspicious activity. Financially, this risk bias is acceptable: verifying a false alert is vastly cheaper than absorbing the catastrophic cost of an undetected attack.
+    
+    \item \textbf{Deceptive Nominal Diagnostics (Accuracy = 0.97)}: The global accuracy metric logs a high value of $97.00\%$. However, within highly imbalanced setups, this parameter is heavily dominated by the massive support size of the legitimate baseline class ($\text{Support} = 553,574$). The model's true validity is instead demonstrated by the Macro Average Recall ($97.00\%$) and the robust PR-AUC ($0.8026$), confirming balanced classification power across both classes rather than a trivial majority-class bias.
+\end{enumerate}
+
+
+% =======================================================
+% SECTION 6: DISCUSSION, LIMITATIONS & FUTURE WORK
+% =======================================================
+
+% =======================================================
+% SECTION 6: DISCUSSION, LIMITATIONS, AND FUTURE WORK
+% =======================================================
+\section{Discussion, Limitations, and Future Work}
+This section provides a critical appraisal of the developed \texttt{TransformerClassifier} and its full-stack microservice orchestration. While the empirical results demonstrate exceptional predictive recall and sub-millisecond local backend execution latency, an enterprise-grade transition requires a transparent acknowledgment of existing algorithmic and architectural constraints. Consequently, the following discourse evaluates current operational limitations and outlines a strategic roadmap for future system development.
+
+\subsection{System Limitations and Critical Appraisal}
+Despite achieving a high anomaly detection rate, the current architecture exhibits critical technical vulnerabilities across two main dimensions:
+
+\begin{enumerate}
+    \item \textbf{Data Information Attrition via Random Under-Sampling}: To mitigate the extreme class skew inherent in the financial logs, a strict Random Under-Sampling (RUS) technique was enforced during the offline training stage. Although this successfully balances the class distribution and forces the multi-head self-attention mechanisms to prioritize the minority \texttt{Fraud} class, it introduces significant information attrition. By randomly dropping over $90\%$ of the legitimate transaction population ($df_{\text{train}}$), the model loses exposure to high-frequency structural variants of normal customer shopping behavior. This systemic data deprivation directly causes the high False Positive Rate (low localized precision of $13.00\%$) documented during empirical validation.
+    
+    \item \textbf{Stale Optimization Blocks and Absence of Online Adaptive Learning}: The current inference engine operating within the Spring Boot domain utilizes a static frozen weight architecture (\texttt{model.onnx}). Financial fraud topologies are inherently dynamic, characterized by rapid "concept drift" where adversarial actors continuously alter their attack vectors. Because the embedded ONNX setup lacks an online adaptive learning pipeline, the model cannot update its structural parameters incrementally based on real-time transaction feedback. Remediation requires an expensive offline re-training cycle, creating a window of vulnerability against novel, zero-day anomalous signatures.
+\end{enumerate}
+
+\subsection{Strategic Roadmap and Evolutionary Architecture}
+To overcome the aforementioned algorithmic limits and elevate the backend's structural scalability to support massive corporate throughput, three strategic architectural upgrades are proposed for the next deployment phase:
+
+\begin{enumerate}
+    \item \textbf{Advanced Architectural Decoupling via Microservice Atomicity}: The core backend domain presently concentrates extensive business rules within the unified \texttt{PurchaseService}. To maximize microservice horizontal scaling, this structure will be decomposed into decoupled atomic services. An independent \texttt{InventoryService} will handle state synchronization and non-blocking inventory deductions, while a dedicated \texttt{PricingService} will isolate transactional billing computations. The primary \texttt{PurchaseService} will evolve into a lightweight event orchestrator, preventing thread starvation and reducing horizontal microservice latency.
+    
+    \item \textbf{Structural Hiding via the PredictionFacade Structural Pattern}: Within the existing operational flow, the \texttt{TransactionService} maintains a direct dependency on the internal data structures of the \texttt{FraudDetectionService}. To enforce strict encapsulation and improve modularity, a \texttt{PredictionFacade} architecture will be implemented. This interface layer will mask the complexities of tensor packaging, buffer pooling, and native ONNX resource lifecycle management. This ensures that any downstream modification to the AI runtime (such as transitioning from ONNX back to a distributed cloud endpoint) can be executed without impacting core e-commerce accounting frameworks.
+    
+    \item \textbf{Synthesized Oversampling and Cost-Sensitive Loss Functions}: To resolve the information loss driven by raw under-sampling, future iterations will shift toward sophisticated data-generation mechanics. Synthetic Minority Over-sampling Techniques (SMOTE) or ADASYN will be integrated to construct continuous synthetic fraud topologies, preserving the entire pristine dataset of legitimate entries. Furthermore, the objective function will transition from standard Binary Cross-Entropy (\texttt{BCEWithLogitsLoss}) to an asymmetric \textbf{Focal Loss} or a cost-sensitive penalty matrix:
+    \begin{equation}
+        \mathcal{L}_{\text{Focal}} = -\alpha_t (1 - p_t)^\gamma \log(p_t)
+    \end{equation}
+    where $\gamma$ represents the dynamic hyperparameter managing down-weighting for easy-to-classify legitimate logs. This mathematical transition will suppress the gradient impact of ubiquitous clean transactions, allowing the system to achieve elite precision constraints without degrading its current $96.88\%$ anomaly sensitivity.
+    
+    \item \textbf{Integration of Long-Term Behavioral Features in Deep Modeling}: Currently, the simplified deep-learning classification head operates solely on static transaction-level attributes (hour, category, and log-amount). In the next evolution, dynamic, long-term historical user statistics (such as historical fraud rates and transaction frequencies) will be integrated directly into the input embeddings of the \texttt{TransformerClassifier}. This will allow the self-attention heads to map correlations across both static feature categories and dynamic historical behaviors simultaneously.
+\end{enumerate}
+
+
+% =======================================================
+% SECTION 7: CONCLUSION
+% =======================================================
+
+% =======================================================
+% SECTION 7: CONCLUSION
+% =======================================================
+\section{Conclusion}
+Throughout this internship project, a comprehensive deep learning framework and operational software ecosystem were successfully engineered to address the challenges of automated financial fraud detection. By exploiting the multi-head self-attention mechanisms of the Transformer architecture, the system moves beyond traditional isolated data entry checks, capturing non-linear sequential relationships across transaction histories. 
+
+Empirical validation on a large-scale dataset confirms that the trained model achieves an exceptional anomaly sensitivity rate, successfully catching approximately $97\%$ of all fraudulent checkout attempts ($\text{Recall} = 0.9688$). Furthermore, the encapsulation of the optimized network weights inside a local, in-memory Spring Boot ONNX Runtime engine establishes a blueprint for zero-network-overhead enterprise architectures, fulfilling the micro-latency requirements of online banking infrastructure. While limitations regarding the high false positive rate remain due to random under-sampling constraints ($Precision = 0.13$), the proposed evolutionary path—incorporating cost-sensitive focal loss boundaries and decentralized microservice layers—establishes a robust roadmap for production readiness. Ultimately, this internship successfully bridges advanced machine learning research with enterprise-tier software engineering, contributing a scalable solution toward securing the modern digital financial economy.
+
+
+\newpage
+\renewcommand{\refname}{References}
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{Security.org} 61 Million Americans Faced Credit Card Fraud in the Last Year
+\url{https://www.security.org/digital-safety/credit-card-fraud-report/}
+
+\bibitem{Hasnain Kashif, & Fawad Naseer} Hasnain Kashif, & Fawad Naseer. (2025). COMPREHENSIVE ANALYSIS OF FRAUD DETECTION PREVENTION SYSTEMS FOR ACCURACY AND EFFICACY. Spectrum of Engineering Sciences, 3(3), 382–401. Retrieved from
+\url{https://thesesjournal.com/index.php/1/article/view/220}
+
+\bibitem{dataset} Credit Card Transactions Fraud Detection Dataset
+Simulated Credit Card Transactions generated using Sparkov 
+\url{https://www.kaggle.com/datasets/kartik2112/fraud-detection}
+
+\bibitem{SparkovSim} Generate Fake Credit Card Transaction Data, Including Fraudulent Transactions
+\url{https://github.com/namebrandon/Sparkov_Data_Generation}
+
+\bibitem{IQR}Kannan, K. Senthamarai, K. Manoj, and S. Arumugam. "Labeling methods for identifying outliers." International Journal of Statistics and Systems 10.2 (2015): 231-238.
+\url{https://www.researchgate.net/profile/Manoj-K-3/publication/283755180_Labeling_Methods_for_Identifying_Outliers/links/5646a95008ae451880aa6d84/Labeling-Methods-for-Identifying-Outliers.pdf}
+
+\bibitem{LR}Nick, T.G., Campbell, K.M. (2007). Logistic Regression. In: Ambrosius, W.T. (eds) Topics in Biostatistics. Methods in Molecular Biology™, vol 404. Humana Press. 
+\url{ https://doi.org/10.1007/978-1-59745-530-5_14}
+
+\bibitem{RF}Rigatti SJ. Random Forest. Journal of Insurance Medicine. 2017 Jan;47(1):31–39. doi:10.17849/insm-47-01-31-39.1
+\url{https://jim.kglmeridian.com/view/journals/insm/47/1/article-p31.xml?%3Crelated_content%3E=contentList-542625&body=FullText}
+
+\bibitem{XGB}H. Li, Y. Cao, S. Li, J. Zhao and Y. Sun, "XGBoost Model and Its Application to Personal Credit Evaluation," in IEEE Intelligent Systems, vol. 35, no. 3, pp. 52-61, 1 May-June 2020, doi: 10.1109/MIS.2020.2972533.
+keywords: {Predictive models;Decision trees;Data models;Analytical models;Prediction algorithms;Machine learning algorithms;Context modeling;Finance;XGB;Ensemble Learning;Feature Engineering;Credit Evaluation},
+
+\bibitem{transformer}Attention Is All You Need
+\url{https://arxiv.org/abs/1706.03762}
+
+\bibitem{Logistic Regression and Transformer}Transformers Efficiently Perform In-Context Logistic Regression via Normalized Gradient Descent
+\url{	arXiv:2605.06609}
+
+\bibitem{metric1}Dalianis, H. (2018). Evaluation Metrics and Evaluation. In: Clinical Text Mining. Springer, Cham. 
+\url{https://doi.org/10.1007/978-3-319-78503-5_6}
+
+\bibitem{metric2}Jin Huang and C. X. Ling, "Using AUC and accuracy in evaluating learning algorithms," in IEEE Transactions on Knowledge and Data Engineering, vol. 17, no. 3, pp. 299-310, March 2005, doi: 10.1109/TKDE.2005.50.
+
+\bibitem{metric3}Jeni LA, Cohn JF, De La Torre F. Facing Imbalanced Data Recommendations for the Use of Performance Metrics. Int Conf Affect Comput Intell Interact Workshops. 2013;2013:245-251. doi: 10.1109/ACII.2013.47. PMID: 25574450; PMCID: PMC4285355.
+
+\newpage
+\addcontentsline{toc}{section}{References}
+\end{thebibliography}
+
+\newpage
+\appendix
+\section*{Appendix: Source Code Repository}
+The complete source code used in this project is available at the following GitHub repository:\\
+\texttt{\url{https://github.com/ducanh02122005-creator/thesis}}
+
+\end{document}

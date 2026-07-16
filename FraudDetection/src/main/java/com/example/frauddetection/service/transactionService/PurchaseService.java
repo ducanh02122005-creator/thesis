@@ -16,7 +16,8 @@ import com.example.frauddetection.repository.*;
 import com.example.frauddetection.service.predictionService.AlertService;
 import com.example.frauddetection.service.predictionService.FraudDetectionService;
 import com.example.frauddetection.service.userSerivice.UserRiskProfileService;
-import jakarta.transaction.Transactional;
+import com.example.frauddetection.exception.TransactionBlockedException;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(noRollbackFor = TransactionBlockedException.class)
 public class PurchaseService {
 
     private final UserRepository userRepository;
@@ -98,6 +99,10 @@ public class PurchaseService {
             if (transactionCategory == null) {
                 transactionCategory =
                         product.getCategory();
+            } else if (!transactionCategory.equals(product.getCategory())) {
+                throw new TransactionBlockedException(
+                    "🚨 Transaction declined! A single transaction cannot contain products from different categories."
+                );
             }
         }
 
@@ -120,6 +125,10 @@ public class PurchaseService {
             }
             purchase.setStatus(PurchaseStatus.CANCELLED);
             purchase = purchaseRepository.save(purchase);
+
+            throw new TransactionBlockedException(
+                "🚨 Transaction declined! The system detected signs of high risk (High Fraud Risk). Please contact support."
+            );
         }
 
         return PurchaseResponse.builder()

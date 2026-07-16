@@ -8,6 +8,11 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface ProfilesMapper {
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user.isEmailVerified", target = "isEmailVerified")
+    @Mapping(source = "user.isPhoneVerified", target = "isPhoneVerified")
+    @Mapping(source = "user.phoneNumber", target = "phoneNumber")
+    @Mapping(source = "user.email", target = "email")
+    @Mapping(source = "user.age", target = "age")
     @Mapping(source = "riskScore", target = "riskScore")
     @Mapping(source = "riskLevel",target = "riskLevel")
     ProfilesResponse toDto(UserRiskProfile profile);

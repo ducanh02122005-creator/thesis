@@ -1,0 +1,276 @@
+% Slide Designed by 
+% Duong Duc Anh
+% Department of Information and Communication Technology
+% University of Science and Technology of Hanoi
+
+\documentclass{beamer}
+\renewcommand{\baselinestretch}{1.1} 
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{diagbox}
+\usepackage{array,multirow}
+\usepackage{tikz}
+\usepackage{booktabs}
+
+\usepackage{hyperref}
+\hypersetup{
+	pdftitle={Bachelor Thesis Presentation by Duong Duc Anh},
+   colorlinks=true,
+   citecolor=blue,
+   linkcolor=blue,
+   urlcolor=blue
+}
+
+\usefonttheme{structurebold}
+\setbeamercolor{title}{fg=black}
+\setbeamercolor{author}{fg=black}
+\setbeamercolor{institute}{fg=white}
+\setbeamercolor{date}{fg=white}
+\setbeamercolor{structure}{fg=black}
+
+\setbeamercolor{footline}{bg=white,fg=gray}
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=3ex,dp=1.2ex,leftskip=3ex,rightskip=3ex]{footline}%
+    \fontsize{6pt}{8pt}\selectfont
+    Department of ICT, USTH \hfill Transformer-Based Fraud Detection \hfill \insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\title{Transformer-Based Financial Transaction Analysis \\ for Fraud Detection}
+\author{Duong Duc Anh}
+\institute{\vspace{0.6cm}Department of Information and Communication Technology \\ University of Science and Technology of Hanoi}
+\date{\vspace{0.2cm}June 2026}
+
+
+\definecolor{blue(pigment)}{rgb}{0.2, 0.2, 0.6}
+\def\bsq{\color{blue(pigment)} $\blacksquare$ \color{black}}
+\begin{document}
+% Set Title Slide Background Here (Plain Custom Layout)
+{
+\usebackgroundtemplate{}
+\begin{frame}[plain]
+    \begin{tikzpicture}[overlay, remember picture]
+        % Left border accent line in navy blue
+        \fill[color=blue(pigment)] (0, 0) rectangle (0.3, 9.6);
+        
+        % Logo in top-right
+        \node[anchor=north east] at (12.5, 9.3) {
+            \includegraphics[width=2.8cm, keepaspectratio]{logo.png}
+        };
+        
+        % Institution text in top-left
+        \node[anchor=north west] at (0.6, 9.3) {
+            \begin{minipage}{8.5cm}
+                \fontsize{8pt}{10pt}\selectfont \textbf{UNIVERSITY OF SCIENCE AND TECHNOLOGY OF HANOI} \\
+                \fontsize{7pt}{9pt}\selectfont DEPARTMENT OF INFORMATION AND COMMUNICATION TECHNOLOGY
+            \end{minipage}
+        };
+        
+        % Title in center
+        \node[anchor=center] at (6.4, 5.3) {
+            \begin{minipage}{11cm}
+                \centering
+                \fontsize{16pt}{20pt}\selectfont \textcolor{blue(pigment)}{\textbf{Transformer-Based Financial Transaction \\ Analysis for Fraud Detection}}
+            \end{minipage}
+        };
+        
+        % Separator line
+        \draw[thick, orange] (3.4, 4.0) -- (9.4, 4.0);
+        
+        % Candidate & Supervisors details
+        \node[anchor=north] at (6.4, 3.8) {
+            \fontsize{9pt}{12pt}\selectfont
+            \renewcommand{\arraystretch}{1.2}
+            \begin{tabular}{rl}
+                \textbf{Candidate:} & Duong Duc Anh \\
+                \textbf{External Supervisor:} & Mr. Nguyen Dinh Bac \\
+                \textbf{Internal Supervisor:} & Mr. Huynh Vinh Nam
+            \end{tabular}
+        };
+        
+        % Location & Date
+        \node[anchor=south] at (6.4, 0.4) {
+            \fontsize{8pt}{10pt}\selectfont \textcolor{gray}{Hanoi, June 2026}
+        };
+    \end{tikzpicture}
+\end{frame}
+}
+% Set Other all Silde Background Here
+\usebackgroundtemplate{\includegraphics[width=\paperwidth, height=\paperheight]{Other_Slides_bg.pdf}}
+
+% Slide 1: Motivation
+\begin{frame}{Context and Motivation\\\rule{\linewidth}{0.5pt}} \label{context}
+\small
+\bsq The rapid growth of digital transactions has led to an increase in credit card fraud, causing billions of dollars in losses globally.\\
+\bsq Traditional rule-based engines struggle with concept drift and fail to capture complex, non-linear relationships across transaction attributes.\\
+\bsq Isolated check models ignore spatiotemporal context and chronological spend behaviors, leading to high false negatives.\\
+\bsq \textbf{Objective}: Propose a deep sequential Transformer architecture integrated into an in-memory, low-latency microservice backend.
+\end{frame} 
+
+% Slide 2: Objectives & Scope
+\begin{frame}{Project Objectives and Scope\\\rule{\linewidth}{0.5pt}} \label{objectives}
+\small
+\bsq \textbf{Algorithmic Optimization}: Train a Transformer classifier to process transactions sequentially based on execution hour, category, and log-amount.\\
+\bsq \textbf{Spatiotemporal Feature Engineering}: Compute rolling 24-hour velocities, impossible travel speeds, and geographic card-cloning indicators.\\
+\bsq \textbf{Class Imbalance Mitigation}: Apply Random Under-Sampling (RUS) to balance the training set to a strict $1:1$ ratio.\\
+\bsq \textbf{Micro-Latency Execution}: Export the trained Python model to ONNX format and embed it in-memory within a Java Spring Boot backend.\\
+\bsq \textbf{Scope Constraints}: Evaluated on the Sparkov synthetic dataset (Jan 2019 to Dec 2020) spanning 1.8M transactions.
+\end{frame}
+
+% Slide 3: Preprocessing & Outliers
+\begin{frame}{Data Preprocessing \& Outlier Diagnostics\\\rule{\linewidth}{0.5pt}} \label{preprocessing}
+\small
+\bsq \textbf{Ingestion \& Cleaning}: Drop high-cardinality demographic noise (names, street addresses, occupations, raw coordinates) to prevent model overfitting.\\
+\bsq \textbf{Temporal Decomposition}: Parse timestamps into diurnal hour of day ($pos=0$), merchant category ($pos=1$), and log-scaled amount ($pos=2$).\\
+\bsq \textbf{Outlier Quantification}: Apply Interquartile Range (IQR) thresholding:
+\begin{equation*}
+[\text{Lower Bound}, \text{Upper Bound}] = [Q_1 - 1.5 \text{IQR}, Q_3 + 1.5 \text{IQR}]
+\end{equation*}\\
+\bsq \textbf{Placeholder: Numeric Distributions Figure} \\
+% \includegraphics[width=0.7\paperwidth]{outlier.png}
+\end{frame}
+
+% Slide 4: Imbalance & Velocity Features
+\begin{frame}{Imbalance Mitigation \& Spatiotemporal Velocity\\\rule{\linewidth}{0.5pt}} \label{imbalance_velocity}
+\small
+\bsq \textbf{Class Imbalance}: Balance the training partition $\mathcal{D}_{\text{train}}$ from a skewed $0.58\%$ fraud rate to a balanced $1:1$ ratio using Random Under-Sampling.\\
+\bsq \textbf{Rolling 24-Hour Velocity}: Group by cryptographic card hash (\texttt{cc\_hashed}) and compute rolling spend volume $S_{24\text{h}}$. A threshold of $S_{24\text{h}} \ge \$2,000$ yields a $73.9\times$ lift in fraud rate.\\
+\bsq \textbf{Inter-Transaction Travel Velocity (Impossible Travel)}:
+\begin{equation*}
+v_{\text{travel}} = \frac{d_{\text{km}}}{\Delta T_{\text{hours}}} \quad (\text{using Haversine formula for } d_{\text{km}})
+\end{equation*}\\
+\bsq \textbf{Cloned-Card Jumps}: Flag near-simultaneous transactions separated by physical distance:
+\begin{equation*}
+\text{Jump}_{\text{clone}} = \mathbb{I}\left( \Delta T_{\text{hours}} < \frac{1}{60} \;\land\; d_{\text{km}} > 5 \right)
+\end{equation*}
+\end{frame}
+
+% Slide 5: Transformer Math Foundations
+\begin{frame}{Transformer Classifier Math Foundations\\\rule{\linewidth}{0.5pt}} \label{transformer_math}
+\small
+\bsq \textbf{Sequence Input}: Compile a single transaction's attributes (Hour, Category, Amount) into an input feature matrix $\mathbf{X} \in \mathbb{R}^{3 \times d_{\text{model}}}$.\\
+\bsq \textbf{Self-Attention Core}: Project tokens to Queries ($\mathbf{Q}$), Keys ($\mathbf{K}$), and Values ($\mathbf{V}$):
+\begin{equation*}
+\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\right)\mathbf{V}
+\end{equation*}\\
+\bsq \textbf{Multi-Head Attention}: Linearly project queries, keys, and values $h$ times in parallel to capture distinct transactional relationships.\\
+\bsq \textbf{Positional Encoding}: Add fixed sinusoidal encodings directly to base embeddings to preserve the structural identity of each transaction feature.
+\end{frame}
+
+% Slide 6: Baseline Modeling Frameworks
+\begin{frame}{Baseline Modeling Frameworks\\\rule{\linewidth}{0.5pt}} \label{baselines}
+\small
+\bsq \textbf{Logistic Regression}: Establishes a linear risk probability baseline:
+\begin{equation*}
+P(y=1|\mathbf{x}) = \frac{1}{1 + e^{-(\mathbf{w}^T \mathbf{x} + b)}}
+\end{equation*}\\
+\bsq \textbf{Decision Tree}: Recursively partitions the feature space to minimize Gini Impurity:
+\begin{equation*}
+I_G(\mathcal{D}) = 1 - \sum_{k \in \{0, 1\}} p_k^2
+\end{equation*}\\
+\bsq \textbf{Random Forest}: Aggregates $M$ bootstrap-sampled decision trees:
+\begin{equation*}
+P(y=1|\mathbf{x}) = \frac{1}{M} \sum_{m=1}^{M} P_m(y=1|\mathbf{x})
+\end{equation*}\\
+\bsq \textbf{XGBoost}: Additive boosting sequential ensemble minimizing regularized loss.
+\end{frame}
+
+% Slide 7: Behavioral Intelligence Architecture
+\begin{frame}{Behavioral Intelligence Architecture\\\rule{\linewidth}{0.5pt}} \label{behavioral_intel}
+\small
+\bsq \textbf{Risk Engine}: Aggregates fraud rates, average prediction probabilities, night rates, and transactional frequencies to compute a Risk Score $\mathcal{R} \in [0, 100]$:
+\begin{equation*}
+\mathcal{R} = 0.40 F_r + 0.30 P_{avg} + 0.20 N_r + 0.10 \min(N_{\text{transaction}}, 100)
+\end{equation*}\\
+\bsq \textbf{Trust Engine}: Evaluates long-term customer credibility via account age, successful purchases, fraud history, and verification status:
+\begin{equation*}
+\mathcal{T} = 0.20 A + 0.30 S + 0.30 H + 0.10 V + 0.10 P
+\end{equation*}\\
+\bsq \textbf{Decision Engine}: Implements a rule-based policy combining Risk Level and Trust Level to select an operational action (\texttt{APPROVE}, \texttt{REVIEW}, \texttt{BLOCK}).
+\end{frame}
+
+% Slide 8: Full-Stack Microservice Processing Flow
+\begin{frame}{Full-Stack Microservice Processing Flow\\\rule{\linewidth}{0.5pt}} \label{processing_flow}
+\small
+\bsq \textbf{Real-Time Transaction Pipeline}: Spring Boot backend intercepts transaction payloads, maps them to type-safe DTOs, and invokes the inference engine.\\
+\bsq \textbf{In-Memory ONNX Runtime}: Embeds the optimized \texttt{model.onnx} file directly in JVM memory via local Java JNI bindings, eliminating network serialization overhead.\\
+\bsq \textbf{Reactive Frontend Dashboard}: Built using Vite, React, and TypeScript. Renders real-time alerts, risk scoring tracking, and user lists using Axios and Chart.js.\\
+\bsq \textbf{Placeholder: System Architecture Diagram} \\
+% \includegraphics[width=0.75\paperwidth]{architecture.png}
+\end{frame}
+
+% Slide 9: Quantitative Experimental Results
+\begin{frame}{Quantitative Experimental Results\\\rule{\linewidth}{0.5pt}} \label{exp_results}
+\small
+\begin{table}[htbp]
+    \centering
+    \tiny
+    \renewcommand{\arraystretch}{0.9}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Model Architecture} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{$F_1$-Score} & \textbf{ROC AUC} \\ \hline
+        Logistic Regression & 0.7566 & 0.0114 & 0.7259 & 0.0225 & 0.8496 \\
+        Decision Tree       & 0.9750 & 0.1306 & 0.9688 & 0.2302 & 0.9671 \\
+        Random Forest       & 0.9691 & 0.1081 & 0.9678 & 0.1945 & 0.9930 \\
+        XGBoost             & 0.9710 & 0.1152 & 0.9758 & 0.2060 & 0.9965 \\ \hline
+        \textbf{Transformer Model} & \textbf{0.9719} & \textbf{0.1300} & \textbf{0.9688} & \textbf{0.2302} & \textbf{0.8026*} \\ \hline
+    \end{tabular}
+    \caption{Performance Metrics under Extreme Class Imbalance (PR-AUC* for Transformer).}
+\end{table}
+\bsq \textbf{Performance Dynamics}: The sequence-based Transformer captures fraud with a high sensitivity rate ($\text{Recall} = 0.9688$) while maintaining a superior precision envelope ($0.1300$) over traditional baselines.\\
+\bsq \textbf{Trade-off Acceptance}: In financial operations, minimizing false negatives (missed fraud) takes precedence over the minor inflation of false-alarm rates.
+\end{frame}
+
+% Slide 10: Decision Tree Detailed Error Distribution
+\begin{frame}{Decision Tree Error Distribution\\\rule{\linewidth}{0.5pt}} \label{dt_error}
+\small
+\bsq The classification error profile of the Decision Tree model on the held-out test partition ($555,719$ transaction sequences) is structured below:
+\begin{table}[htbp]
+    \centering
+    \tiny
+    \begin{tabular}{|l|c|c|}
+        \hline
+        & \textbf{Predicted Legitimate} & \textbf{Predicted Fraudulent} \\ \hline
+        \textbf{Actual Legitimate} & 539,743 (True Negative) & 13,831 (False Positive) \\
+        \textbf{Actual Fraudulent} & 67 (False Negative) & 2,078 (True Positive) \\ \hline
+    \end{tabular}
+    \caption{Confusion Matrix Error Distribution (Decision Tree Baseline)}
+\end{table}
+\bsq \textbf{Key Observation}: Out of $2,145$ active fraud vectors, the model correctly flags $2,078$ transactions, letting only $67$ attacks leak through. However, it triggers $13,831$ false alerts within the legitimate population.
+\end{frame}
+
+% Slide 11: Limitations and Future Work
+\begin{frame}{Limitations and Future Work\\\rule{\linewidth}{0.5pt}} \label{limitations}
+\small
+\bsq \textbf{Information Attrition}: Random Under-Sampling drops over $90\%$ of legitimate samples, depriving the model of normal behavior variants. \\
+\bsq \textbf{Concept Drift \& Stale Weights}: The static embedded ONNX classifier cannot update weights dynamically based on real-time transaction feedback.\\
+\bsq \textbf{Oversampling and Focal Loss (Roadmap)}: Incorporate synthetic generation (SMOTE) to preserve clean data, and shift to Focal Loss:
+\begin{equation*}
+\mathcal{L}_{\text{FL}}(p_t) = -\alpha_t (1 - p_t)^\gamma \log(p_t)
+\end{equation*}\\
+\bsq \textbf{Deep Velocity Integration}: Feed rolling velocities ($S_{24\text{h}}$) and travel speeds ($v_{\text{travel}}$) directly into the TransformerClassifier input embeddings.
+\end{frame}
+
+% Slide 12: Conclusion
+\begin{frame}{Conclusion\\\rule{\linewidth}{0.5pt}} \label{conclusion}
+\small
+\bsq Proposed and implemented a comprehensive deep learning framework and microservice architecture to address automated financial fraud detection.\\
+\bsq Exploited the self-attention mechanisms of the Transformer architecture to capture non-linear relationships across transaction attribute sequences.\\
+\bsq Achieved an exceptional fraud detection rate, successfully catching $96.88\%$ of checkout attempts ($\text{Recall} = 0.9688$) with sub-millisecond local backend execution latency.\\
+\bsq Integrated the ONNX model within a production-ready Java Spring Boot backend, establishing a blueprint for low-latency, zero-overhead financial infrastructure.
+\end{frame}
+
+% Slide 13: Thank You
+\begin{frame} \label{lastslide}
+\begin{center}
+{\fontsize{30}{40}\selectfont Thank You!}\\[1.5cm]
+{\fontsize{16}{20}\selectfont Questions \& Comments}
+\end{center}
+\end{frame}
+
+\end{document}

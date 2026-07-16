@@ -46,9 +46,13 @@ public class UserRiskProfileService {
     }
 
     public ResponseEntity<ProfilesResponse> getUserProfiles(Long id) {
-
-        return profileRepository.findByUserId(id)
-                .map(profile -> ResponseEntity.ok(mapper.toDto(profile)))
+        return userRepository.findById(id)
+                .map(user -> {
+                    updateUserRisk(id);
+                    UserRiskProfile profile = profileRepository.findByUserId(id)
+                            .orElseGet(() -> createProfile(user));
+                    return ResponseEntity.ok(mapper.toDto(profile));
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -93,7 +97,9 @@ public class UserRiskProfileService {
 
         // Calculate Trust Score components
         double ageDays = user.getCreatedAt() != null ? ChronoUnit.DAYS.between(user.getCreatedAt(), LocalDateTime.now()) : 30.0;
-        double A = Math.min(ageDays, 180.0) * 100.0 / 180.0;
+        double creationScore = Math.min(ageDays, 180.0) * 100.0 / 180.0;
+        double physicalAgeScore = user.getAge() != null ? Math.min(user.getAge() * 2.5, 100.0) : 60.0;
+        double A = (creationScore * 0.6) + (physicalAgeScore * 0.4);
 
         long totalPurchases = purchaseRepository.countByUserId(userId);
         long successfulPurchases = purchaseRepository.countByUserIdAndStatus(userId, com.example.frauddetection.entity.transaction.purchases.PurchaseStatus.PAID);
@@ -102,10 +108,18 @@ public class UserRiskProfileService {
         long confirmedFraudCount = alertRepository.countByUserIdAndStatus(userId, AlertStatus.CONFIRMED);
         double H = Math.max(0.0, 100.0 - (confirmedFraudCount * 25.0));
 
+        double V = (user.getIsEmailVerified() != null && user.getIsEmailVerified() ? 50.0 : 0.0) + (user.getIsPhoneVerified() != null && user.getIsPhoneVerified() ? 50.0 : 0.0);
+
         double P = Math.min(totalPurchases * 10.0, 100.0);
 
-        double tScore = (A * 0.20) + (S * 0.30) + (H * 0.30) + (100.0 * 0.10) + (P * 0.10);
+        double tScore = (A * 0.20) + (S * 0.30) + (H * 0.30) + (V * 0.10) + (P * 0.10);
         profile.setTrustScore(tScore);
+
+        profile.setAccountAgeScore(A);
+        profile.setPurchaseSuccessRateScore(S);
+        profile.setFraudHistoryScore(H);
+        profile.setVerificationScore(V);
+        profile.setPurchaseActivityScore(P);
 
         if (tScore >= 90.0) {
             profile.setTrustLevel(TrustLevel.EXCELLENT);
@@ -120,5 +134,31 @@ public class UserRiskProfileService {
         profileRepository.save(profile);
 
         return profile.getRiskLevel().name();
+    }
+
+    public ResponseEntity<ProfilesResponse> verifyEmail(Long id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setIsEmailVerified(true);
+                    userRepository.save(user);
+                    updateUserRisk(id);
+                    UserRiskProfile profile = profileRepository.findByUserId(id)
+                            .orElseGet(() -> createProfile(user));
+                    return ResponseEntity.ok(mapper.toDto(profile));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    public ResponseEntity<ProfilesResponse> verifyPhone(Long id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setIsPhoneVerified(true);
+                    userRepository.save(user);
+                    updateUserRisk(id);
+                    UserRiskProfile profile = profileRepository.findByUserId(id)
+                            .orElseGet(() -> createProfile(user));
+                    return ResponseEntity.ok(mapper.toDto(profile));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }

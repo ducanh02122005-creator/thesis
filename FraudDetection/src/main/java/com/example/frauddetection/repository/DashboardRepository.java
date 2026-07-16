@@ -70,6 +70,7 @@ ORDER BY COUNT(fp.id) DESC
 SELECT new com.example.frauddetection.dtos.dashboard.TopUserResponse(
     u.id,
     u.fullName,
+    u.email,
     COUNT(fp.id),
     urp.riskScore,
     urp.riskLevel,
@@ -79,11 +80,34 @@ SELECT new com.example.frauddetection.dtos.dashboard.TopUserResponse(
 FROM FraudPrediction fp
 JOIN fp.transactionId t
 JOIN t.user u
-JOIN UserRiskProfile urp
+LEFT JOIN UserRiskProfile urp
     ON urp.user.id = u.id
 WHERE fp.isFraud = true
-GROUP BY u.id, u.fullName, urp.riskScore, urp.riskLevel, urp.trustScore, urp.trustLevel
+GROUP BY u.id, u.fullName, u.email, urp.riskScore, urp.riskLevel, urp.trustScore, urp.trustLevel
 ORDER BY COUNT(fp.id) DESC
 """)
     List<TopUserResponse> getTopUsers(Pageable pageable);
+
+    @Query("""
+SELECT new com.example.frauddetection.dtos.dashboard.TopUserResponse(
+    u.id,
+    u.fullName,
+    u.email,
+    COALESCE(SUM(CASE WHEN fp.isFraud = true THEN 1 ELSE 0 END), 0),
+    urp.riskScore,
+    urp.riskLevel,
+    urp.trustScore,
+    urp.trustLevel
+)
+FROM User u
+LEFT JOIN UserRiskProfile urp
+    ON urp.user.id = u.id
+LEFT JOIN Transaction t
+    ON t.user.id = u.id
+LEFT JOIN FraudPrediction fp
+    ON fp.transactionId.id = t.id
+WHERE u.role = 'CUSTOMER'
+GROUP BY u.id, u.fullName, u.email, urp.riskScore, urp.riskLevel, urp.trustScore, urp.trustLevel
+""")
+    List<TopUserResponse> getAllUsersRisk();
 }

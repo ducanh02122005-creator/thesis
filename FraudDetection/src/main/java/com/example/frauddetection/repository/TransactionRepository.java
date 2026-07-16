@@ -30,4 +30,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
         )
     """, nativeQuery = true)
     long countNightTransaction(@Param("userId") Long userId);
+
+    java.util.List<Transaction> findByUserIdOrderByTransactionTimeDesc(Long userId);
 }

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import { AlertResponse } from "../../../types/alert";
 
 export default function FraudInvestigation() {
+    const navigate = useNavigate();
 
     const [alerts, setAlerts] = useState<AlertResponse[]>([]);
     const [loading, setLoading] = useState(false);
@@ -40,7 +42,7 @@ export default function FraudInvestigation() {
             {/* FILTER */}
             <div style={{ marginBottom: 15 }}>
                 <button onClick={() => setFilter("ALL")}>All</button>
-                <button onClick={() => setFilter("PENDING")}>Pending</button>
+                <button onClick={() => setFilter("OPEN")}>Open</button>
                 <button onClick={() => setFilter("CONFIRMED")}>Confirmed</button>
                 <button onClick={() => setFilter("FALSE_POSITIVE")}>False</button>
             </div>
@@ -98,7 +100,7 @@ export default function FraudInvestigation() {
 
                         <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
 
-                            <button
+                             <button
                                 onClick={() =>
                                     updateStatus(alert.alertId, "CONFIRMED")
                                 }
@@ -107,7 +109,8 @@ export default function FraudInvestigation() {
                                     color: "white",
                                     border: "none",
                                     padding: "6px 10px",
-                                    borderRadius: 6
+                                    borderRadius: 6,
+                                    cursor: "pointer"
                                 }}
                             >
                                 Confirm
@@ -122,10 +125,25 @@ export default function FraudInvestigation() {
                                     color: "white",
                                     border: "none",
                                     padding: "6px 10px",
-                                    borderRadius: 6
+                                    borderRadius: 6,
+                                    cursor: "pointer"
                                 }}
                             >
                                 False
+                            </button>
+
+                            <button
+                                onClick={() => navigate(`/admin/risk-detail/${alert.userId}`)}
+                                style={{
+                                    background: "#3b82f6",
+                                    color: "white",
+                                    border: "none",
+                                    padding: "6px 10px",
+                                    borderRadius: 6,
+                                    cursor: "pointer"
+                                }}
+                            >
+                                🔍 Inspect Profile
                             </button>
 
                         </div>

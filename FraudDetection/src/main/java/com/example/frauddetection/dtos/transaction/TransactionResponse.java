@@ -17,4 +17,10 @@ public class TransactionResponse {
     private Boolean fraud;
 
     private String decision;
+
+    private Double amount;
+
+    private String category;
+
+    private java.time.LocalDateTime transactionTime;
 }

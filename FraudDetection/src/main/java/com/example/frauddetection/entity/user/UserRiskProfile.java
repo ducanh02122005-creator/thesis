@@ -34,5 +34,20 @@ public class UserRiskProfile {
     @Enumerated(EnumType.STRING)
     private TrustLevel trustLevel;
 
+    @Builder.Default
+    private Double accountAgeScore = 100.0;
+
+    @Builder.Default
+    private Double purchaseSuccessRateScore = 100.0;
+
+    @Builder.Default
+    private Double fraudHistoryScore = 100.0;
+
+    @Builder.Default
+    private Double verificationScore = 100.0;
+
+    @Builder.Default
+    private Double purchaseActivityScore = 100.0;
+
     private LocalDateTime updatedAt;
 }

@@ -24,8 +24,26 @@ export const adminApi = {
     getTopUsers: () =>
         axiosClient.get<TopUserResponse[]>("/dashboard/top-users"),
 
+    getAllUsersRisk: () =>
+        axiosClient.get<TopUserResponse[]>("/dashboard/all-users"),
+
     getUserRiskProfile: (userId: number) =>
         axiosClient.get<any>(`/users/${userId}/risk-profile`),
+
+    getUserTransactions: (userId: number) =>
+        axiosClient.get<any[]>(`/transactions/user/${userId}`),
+
+    verifyEmail: (userId: number) =>
+        axiosClient.post<any>(`/users/${userId}/risk-profile/verify-email`),
+
+    verifyPhone: (userId: number) =>
+        axiosClient.post<any>(`/users/${userId}/risk-profile/verify-phone`),
+
+    updateTransactionDecision: (transactionId: number, decision: string) =>
+        axiosClient.put(`/transactions/${transactionId}/decision?decision=${decision}`),
+
+    deleteTransaction: (transactionId: number) =>
+        axiosClient.delete(`/transactions/${transactionId}`),
 
     // ===== ALERT =====
     getAllAlerts: () =>

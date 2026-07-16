@@ -24,5 +24,7 @@ public class AlertResponse {
 
     private String note;
 
+    private Long userId;
+
     private LocalDateTime createdAt;
 }

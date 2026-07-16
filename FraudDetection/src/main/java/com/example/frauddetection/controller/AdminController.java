@@ -41,6 +41,11 @@ public class AdminController {
         return dashboardService.getTopUsers();
     }
 
+    @GetMapping("/all-users")
+    public List<TopUserResponse> getAllUsersRisk() {
+        return dashboardService.getAllUsersRisk();
+    }
+
     @GetMapping("/alert")
     public List<AlertResponse> getAllAlerts(){return alertService.getAllAlerts();}
 

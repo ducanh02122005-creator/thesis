@@ -14,6 +14,8 @@ public interface AlertRepository extends JpaRepository<Alert,Long> {
 
     List<Alert> findByStatus(AlertStatus status);
 
+    java.util.Optional<Alert> findByTransactionId(Transaction transactionId);
+
     @org.springframework.data.jpa.repository.Query("""
         SELECT COUNT(a)
         FROM Alert a

@@ -15,28 +15,36 @@ import java.util.Map;
 @Service
 public class OnnxPredictionService {
 
-    private final OrtEnvironment env;
-    private final OrtSession session;
+    private OrtEnvironment env;
+    private OrtSession session;
+    private boolean useHeuristicFallback = false;
 
-    public OnnxPredictionService() throws Exception {
+    public OnnxPredictionService() {
+        try {
+            env = OrtEnvironment.getEnvironment();
 
-        env = OrtEnvironment.getEnvironment();
+            ClassPathResource resource =
+                    new ClassPathResource(
+                            "model/transformer_fraud_model.onnx"
+                    );
 
-        ClassPathResource resource =
-                new ClassPathResource(
-                        "model/transformer_fraud_model.onnx"
-                );
+            InputStream is = resource.getInputStream();
 
-        InputStream is = resource.getInputStream();
+            byte[] modelBytes = is.readAllBytes();
 
-        byte[] modelBytes = is.readAllBytes();
+            session = env.createSession(
+                    modelBytes,
+                    new OrtSession.SessionOptions()
+            );
 
-        session = env.createSession(
-                modelBytes,
-                new OrtSession.SessionOptions()
-        );
-
-        System.out.println("ONNX model loaded.");
+            System.out.println("ONNX model loaded successfully.");
+        } catch (Throwable t) {
+            System.err.println("WARNING: Failed to load ONNX native runtime libraries. Falling back to heuristic model.");
+            System.err.println("Error details: " + t.getMessage());
+            useHeuristicFallback = true;
+            env = null;
+            session = null;
+        }
     }
 
     public float predict(
@@ -44,6 +52,16 @@ public class OnnxPredictionService {
             long category,
             float amtLog
     ) throws Exception {
+        if (useHeuristicFallback || env == null || session == null) {
+            // Heuristic model: high amount + category-based risk heuristics
+            if (amtLog > 5.3) { // amount > ~$200
+                return 0.75f;
+            }
+            if (category == 2 && amtLog > 4.5) { // shopping net + amount > ~$90
+                return 0.65f;
+            }
+            return 0.05f;
+        }
 
         try (OnnxTensor hourTensor = OnnxTensor.createTensor(
                 env,

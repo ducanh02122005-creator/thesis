@@ -1,0 +1,297 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[absolute,overlay]{textpos}
+\usetheme{Madrid}
+\usecolortheme{default}
+\useinnertheme{circles}
+\usepackage{tikz}
+\usepackage{array,multirow}
+\usepackage{booktabs}
+
+\renewcommand{\baselinestretch}{1.1} 
+
+\definecolor{Blue1}{rgb}{0.85, 0.90, 0.98}  
+\definecolor{Blue2}{rgb}{0.10, 0.20, 0.45}
+
+\setbeamercolor*{palette primary}{bg=Blue2, fg=white}
+\setbeamercolor*{palette secondary}{bg=Blue2, fg=white}
+\setbeamercolor*{palette tertiary}{bg=white, fg=Blue2}
+\setbeamercolor*{palette quaternary}{bg=Blue2,fg=white}
+\setbeamercolor{structure}{fg=Blue2} % itemize, enumerate, etc
+\setbeamercolor{section in toc}{fg=Blue2} % TOC sections
+\setbeamercolor{framesubtitle}{bg=white,fg=black }
+
+\title[Fraud Detection]
+{Transformer-Based Financial Transaction Analysis \\ for Fraud Detection}
+
+\author[Duong Duc Anh]
+{Duong Duc Anh}
+
+\institute[]
+{
+  \vspace{0.6cm}Department of Information and Communication Technology \\
+  University of Science and Technology of Hanoi
+}
+
+\date[]
+{
+  \vspace{0.2cm}June 2026
+}
+
+\definecolor{blue(pigment)}{rgb}{0.2, 0.2, 0.6}
+\def\bsq{\color{Blue2} $\blacksquare$ \color{black}}
+
+\begin{document}
+
+% Standard Madrid-style Beamer Title Slide
+\frame{\titlepage}
+
+% Slide 1: Motivation
+\begin{frame}{Context and Motivation\\\rule{\linewidth}{0.5pt}} \label{context}
+\small
+\bsq \textbf{Global Fraud Losses}: Rapid digital transaction growth drives billions in annual credit card fraud losses.\\
+\bsq \textbf{Static Rules Failure}: Traditional engines struggle with concept drift and complex, non-linear relationships.\\
+\bsq \textbf{Isolated Check Limit}: Single-transaction checks ignore sequential context, leading to high false negatives.\\
+\bsq \textbf{Core Goal}: Propose a deep sequential Transformer classifier integrated with a low-latency Spring Boot backend.
+\end{frame} 
+
+% Slide 2: Objectives & Scope
+\begin{frame}{Project Objectives and Scope\\\rule{\linewidth}{0.5pt}} \label{objectives}
+\small
+\bsq \textbf{Sequence Modeling}: Optimize a Transformer classifier using transaction hour, category, and log-amount.\\
+\bsq \textbf{Feature Engineering}: Extract context features, normalize amounts, and aggregate database-driven user profiles.\\
+\bsq \textbf{Imbalance Mitigation}: Apply Random Under-Sampling (RUS) to establish a balanced 1:1 training set.\\
+\bsq \textbf{Micro-Latency Execution}: Export Python models to ONNX and embed in-memory inside Spring Boot.\\
+\bsq \textbf{Scope}: Evaluated on the synthetic Sparkov dataset spanning 1.8M transactions (Jan 2019 – Dec 2020).
+\end{frame}
+
+% Slide 3: Behavioral Feature Engineering
+\begin{frame}{Behavioral Feature Engineering Pipeline\\\rule{\linewidth}{0.5pt}} \label{preprocessing}
+\small
+\bsq \textbf{Feature Extraction}: Extract transaction execution hour, merchant category, and raw amount directly.\\
+\bsq \textbf{Feature Aggregation}: Query historical user stats (fraud rate, frequency, success rate, verification) to feed risk engines.\\
+\bsq \textbf{Log Normalization}: Apply logarithmic scaling to continuous numerical attributes to compress dynamic range:
+\begin{equation}
+x_{\text{amt}} = \ln(\text{amount} + 1)
+\end{equation}
+\end{frame}
+
+% Slide 4: Imbalance Mitigation & Input Feature Space
+\begin{frame}{Imbalance Mitigation \& Input Feature Space\\\rule{\linewidth}{0.5pt}} \label{imbalance_features}
+\small
+\bsq \textbf{Imbalance Mitigation}: Downsample majority class to a 1:1 training ratio via Random Under-Sampling (RUS).\\
+\bsq \textbf{Model Input Triplet}: Processes three context features for each transaction sequence:
+\begin{itemize}
+    \item \textbf{Hour of Day}: Captures diurnal behavioral patterns (e.g., night checkout spikes).
+    \item \textbf{Merchant Category}: Identifies the purchase domain (e.g., shopping, travel, utilities).
+    \item \textbf{Log-Amount ($x_{\text{amt}}$)}: Represents log-scaled transaction size to stabilize gradient updates.
+\end{itemize}\\
+\bsq \textbf{Prediction Goal}: Map sequence-level dependencies across these token inputs to calculate transaction fraud risk.
+\end{frame}
+
+% Slide 5: Transformer Architecture & Math Foundations
+\begin{frame}{Transformer Architecture \& Math Foundations\\\rule{\linewidth}{0.5pt}} \label{transformer_architecture}
+\begin{columns}
+\begin{column}{0.42\textwidth}
+\small
+\bsq \textbf{Input Serialization}:
+\begin{equation*}
+\mathbf{X}_{\text{in}} = \text{Concat}(\text{Hr}, \text{Cat}, x_{\text{amt}})
+\end{equation*}
+maps inputs to $\mathbb{R}^{3 \times d_{\text{model}}}$.\\
+\bsq \textbf{Positional Sum}: Adds sinusoidal coordinates to preserve feature identities.\\
+\bsq \textbf{Self-Attention Core}: Maps cross-feature dependencies via projections:
+\begin{equation*}
+\text{Attn} = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\right)\mathbf{V}
+\end{equation*}
+\end{column}
+
+\begin{column}{0.58\textwidth}
+\begin{center}
+\begin{tikzpicture}[
+    scale=0.52, every node/.style={scale=0.52},
+    block/.style={draw, thick, fill=Blue1, text width=3.8cm, align=center, rounded corners, minimum height=0.55cm},
+    token/.style={draw, thick, fill=white, text width=1.5cm, align=center, rounded corners, minimum height=0.45cm},
+    op/.style={draw, circle, thick, fill=white, inner sep=1pt},
+    input/.style={draw, thick, fill=gray!20, text width=1.8cm, align=center, rounded corners, minimum height=0.45cm}
+]
+    % 1. Inputs (y=0)
+    \node[input] (in1) at (-2.5, 0) {\fontsize{8pt}{9pt}\selectfont Hour};
+    \node[input] (in2) at (0, 0) {\fontsize{8pt}{9pt}\selectfont Category};
+    \node[input] (in3) at (2.5, 0) {\fontsize{8pt}{9pt}\selectfont Log-Amount};
+    
+    % 2. Projections / Tokens (y=1.2)
+    \node[token] (tok1) at (-2.5, 1.2) {\fontsize{8pt}{9pt}\selectfont Hour Token};
+    \node[token] (tok2) at (0, 1.2) {\fontsize{8pt}{9pt}\selectfont Cat Token};
+    \node[token] (tok3) at (2.5, 1.2) {\fontsize{8pt}{9pt}\selectfont Amt Token};
+    
+    \draw[->, thick] (in1) -- (tok1);
+    \draw[->, thick] (in2) -- (tok2);
+    \draw[->, thick] (in3) -- (tok3);
+    
+    % 3. Positional Encoding Addition (y=2.2)
+    \node[op] (add1) at (-2.5, 2.2) {$+$};
+    \node[op] (add2) at (0, 2.2) {$+$};
+    \node[op] (add3) at (2.5, 2.2) {$+$};
+    
+    \draw[->, thick] (tok1) -- (add1);
+    \draw[->, thick] (tok2) -- (add2);
+    \draw[->, thick] (tok3) -- (add3);
+    
+    \node[token, fill=yellow!20, text width=1.0cm] (pe1) at (-3.7, 2.2) {\fontsize{7pt}{8pt}\selectfont PE(0)};
+    \node[token, fill=yellow!20, text width=1.0cm] (pe2) at (-1.2, 2.2) {\fontsize{7pt}{8pt}\selectfont PE(1)};
+    \node[token, fill=yellow!20, text width=1.0cm] (pe3) at (1.3, 2.2) {\fontsize{7pt}{8pt}\selectfont PE(2)};
+    
+    \draw[->, thick] (pe1) -- (add1);
+    \draw[->, thick] (pe2) -- (add2);
+    \draw[->, thick] (pe3) -- (add3);
+    
+    % 4. Self-Attention Block (y=3.8)
+    \node[block, fill=Blue2, text=white, text width=7.2cm, minimum height=0.8cm] (attn) at (0, 3.8) {
+        \textbf{Multi-Head Self-Attention Layer} \\
+        \fontsize{7pt}{8pt}\selectfont $\text{Attention}(Q,K,V) = \text{softmax}(QK^T / \sqrt{d_k})V$
+    };
+    
+    \draw[->, thick] (add1) -- (-2.5, 3.4);
+    \draw[->, thick] (add2) -- (0, 3.4);
+    \draw[->, thick] (add3) -- (2.5, 3.4);
+    
+    % 5. Global Pooling (y=5.2)
+    \node[block, text width=5.8cm] (pool) at (0, 5.2) {
+        \fontsize{8pt}{9pt}\selectfont Global Average Pooling \& Layer Norm
+    };
+    \draw[->, thick] (attn) -- (pool);
+    
+    % 6. Classification Head (y=6.4)
+    \node[block, text width=4.5cm] (head) at (0, 6.4) {
+        \fontsize{8pt}{9pt}\selectfont Linear Output Projection Layer
+    };
+    \draw[->, thick] (pool) -- (head);
+    
+    % 7. Output (y=7.4)
+    \node[token, fill=red!20, text width=2.5cm, minimum height=0.55cm] (out) at (0, 7.4) {
+        \fontsize{8pt}{9pt}\selectfont \textbf{Softmax Risk Score}
+    };
+    \draw[->, thick] (head) -- (out);
+
+\end{tikzpicture}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+% Slide 6: Risk & Trust Scoring Engines
+\begin{frame}{Risk \& Trust Scoring Engines\\\rule{\linewidth}{0.5pt}} \label{behavioral_intel}
+\small
+\bsq \textbf{Risk Engine}: Aggregates model predictions, night checkout rates, and frequency into a Risk Score $\mathcal{R} \in [0, 100]$:
+\begin{equation*}
+\mathcal{R} = 0.40 F_r + 0.30 P_{avg} + 0.20 N_r + 0.10 \min(N_{\text{transaction}}, 100)
+\end{equation*}\\
+\bsq \textbf{Trust Engine}: Tracks long-term reputation via account age, successful checkouts, and verification status $\mathcal{T} \in [0, 100]$:
+\begin{equation*}
+\mathcal{T} = 0.20 A + 0.30 S + 0.30 H + 0.10 V + 0.10 P
+\end{equation*}
+\end{frame}
+
+% Slide 7: Adaptive Decision Engine Matrix
+\begin{frame}{Adaptive Decision Engine Matrix\\\rule{\linewidth}{0.5pt}} \label{decision_matrix}
+\small
+\bsq \textbf{Evaluation Policy}: Evaluates short-term anomaly risk against long-term customer reputation to prevent false declines.\\
+\bsq \textbf{Decision Matrix}: Selects operational actions (\texttt{APPROVE}, \texttt{REVIEW}, \texttt{BLOCK}) based on score intersections:
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Risk Level} & \textbf{Poor / Average} & \textbf{Good} & \textbf{Excellent} \\
+\midrule
+\textbf{LOW}    & \textcolor{green!60!black}{APPROVE} & \textcolor{green!60!black}{APPROVE} & \textcolor{green!60!black}{APPROVE} \\
+\textbf{MEDIUM} & \textcolor{orange}{REVIEW} & \textcolor{orange}{REVIEW} & \textcolor{green!60!black}{APPROVE} \\
+\textbf{HIGH}   & \textcolor{red}{BLOCK} & \textcolor{orange}{REVIEW} & \textcolor{orange}{REVIEW} \\
+\bottomrule
+\end{tabular}
+\caption{Adaptive Decision Policy Matrix}
+\end{table}
+\bsq \textbf{Adaptive Verification}: Redirects high-risk, high-trust users to additional verification (MFA) rather than blocking.
+\end{frame}
+
+% Slide 8: Full-Stack Microservice Processing Flow
+\begin{frame}{Full-Stack Microservice Processing Flow\\\rule{\linewidth}{0.5pt}} \label{processing_flow}
+\small
+\bsq \textbf{Spring Boot Backend}: Intercepts transaction payloads, validates DTOs, and triggers the risk flow in real time.\\
+\bsq \textbf{In-Memory ONNX Inference}: Executes local model queries within the JVM via Java JNI, eliminating network latency.\\
+\bsq \textbf{React Administration Dashboard}: Renders live fraud alerts, user lists, and dynamic risk tracking via Vite and Chart.js.\\
+\bsq \textbf{Placeholder: System Architecture Diagram} \\
+% \includegraphics[width=0.75\paperwidth]{architecture.png}
+\end{frame}
+
+% Slide 9: Quantitative Experimental Results
+\begin{frame}{Quantitative Experimental Results\\\rule{\linewidth}{0.5pt}} \label{exp_results}
+\small
+\begin{table}[htbp]
+    \centering
+    \tiny
+    \renewcommand{\arraystretch}{0.9}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Model Architecture} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{$F_1$-Score} & \textbf{ROC AUC} \\ \hline
+        Logistic Regression & 0.7566 & 0.0114 & 0.7259 & 0.0225 & 0.8496 \\
+        Decision Tree       & 0.9750 & 0.1306 & 0.9688 & 0.2302 & 0.9671 \\
+        Random Forest       & 0.9691 & 0.1081 & 0.9678 & 0.1945 & 0.9930 \\
+        XGBoost             & 0.9710 & 0.1152 & 0.9758 & 0.2060 & 0.9965 \\ \hline
+        \textbf{Transformer Model} & \textbf{0.9719} & \textbf{0.1300} & \textbf{0.9688} & \textbf{0.2302} & \textbf{0.8026*} \\ \hline
+    \end{tabular}
+    \caption{Performance Metrics under Extreme Class Imbalance (PR-AUC* for Transformer).}
+\end{table}
+\bsq \textbf{Performance}: Achieves high detection sensitivity ($\text{Recall} = 0.9688$) and superior Precision ($0.1300$) over baselines.\\
+\bsq \textbf{Business Priority}: Minimizing false negatives (missed fraud attacks) is prioritized over minor false alarm increases.
+\end{frame}
+
+% Slide 10: Decision Tree Detailed Error Distribution
+\begin{frame}{Decision Tree Error Distribution\\\rule{\linewidth}{0.5pt}} \label{dt_error}
+\small
+\bsq \textbf{Evaluation Profile}: Classification error results on the held-out test set ($555,719$ sequences):
+\begin{table}[htbp]
+    \centering
+    \tiny
+    \begin{tabular}{|l|c|c|}
+        \hline
+        & \textbf{Predicted Legitimate} & \textbf{Predicted Fraudulent} \\ \hline
+        \textbf{Actual Legitimate} & 539,743 (True Negative) & 13,831 (False Positive) \\
+        \textbf{Actual Fraudulent} & 67 (False Negative) & 2,078 (True Positive) \\ \hline
+    \end{tabular}
+    \caption{Confusion Matrix Error Distribution (Decision Tree Baseline)}
+\end{table}
+\bsq \textbf{Observation}: Catches $2,078$ out of $2,145$ fraud incidents, leaking $67$ attacks, but generates $13,831$ false positives.
+\end{frame}
+
+% Slide 11: Limitations and Future Work
+\begin{frame}{Limitations and Future Work\\\rule{\linewidth}{0.5pt}} \label{limitations}
+\small
+\bsq \textbf{Data Attrition}: Random Under-Sampling discards over 90% of genuine samples, limiting clean behavior diversity.\\
+\bsq \textbf{Weight Staleness}: Embedded ONNX models do not update weights dynamically in response to online feedback.\\
+\bsq \textbf{SMOTE \& Focal Loss (Roadmap)}: Preserve legitimate samples via oversampling, and shift to skew-sensitive Focal Loss:
+\begin{equation*}
+\mathcal{L}_{\text{FL}}(p_t) = -\alpha_t (1 - p_t)^\gamma \log(p_t)
+\end{equation*}\\
+\bsq \textbf{Input Context Extension (Roadmap)}: Embed dynamic, long-term database-aggregated user profile metrics directly into the Transformer.
+\end{frame}
+
+% Slide 12: Conclusion
+\begin{frame}{Conclusion\\\rule{\linewidth}{0.5pt}} \label{conclusion}
+\small
+\bsq \textbf{End-to-End System}: Implemented a sequential deep learning framework and microservice architecture for fraud detection.\\
+\bsq \textbf{Sequence Modeling}: Leveraged self-attention to capture non-linear relationships across transaction attributes.\\
+\bsq \textbf{High Detection Rate}: Achieved a $96.88\%$ check-out fraud detection recall with micro-latency JVM inference.\\
+\bsq \textbf{Enterprise Ready}: Embedded ONNX in Spring Boot, providing a blueprint for zero-overhead real-time deployment.
+\end{frame}
+
+% Slide 13: Thank You
+\begin{frame} \label{lastslide}
+\begin{center}
+{\fontsize{30}{40}\selectfont Thank You!}\\[1.5cm]
+{\fontsize{16}{20}\selectfont Questions \& Comments}
+\end{center}
+\end{frame}
+
+\end{document}

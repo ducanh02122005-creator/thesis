@@ -47,6 +47,8 @@ public class AuthenticationService {
         User user = User.builder()
                 .fullName(request.getFullName())
                 .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .age(request.getAge())
                 .password(encoder.encode(request.getPassword()))
                 .role(role)
                 .createdAt(LocalDateTime.now())

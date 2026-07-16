@@ -4,8 +4,11 @@ import {
   Route,
   Navigate,
   Outlet,
-  NavLink
+  NavLink,
+  useNavigate
 } from "react-router-dom";
+
+import "./component/pages/admin/AdminLayout.css";
 
 // IMPORT 2 TRANG MỚI TÁCH
 import LoginPage from "./component/pages/auth/Login";
@@ -17,6 +20,8 @@ import UserRiskRanking from "./component/pages/admin/UserRiskRanking";
 import UserRiskDetail from "./component/pages/admin/UserRiskDetail";
 import FraudInvestigation from "./component/pages/admin/FraudInvestigation";
 import ProductManagement from "./component/pages/products/ProductManagement";
+import PersonalTransactions from "./component/pages/products/PersonalTransactions";
+import CategoryShop from "./component/pages/products/CategoryShop";
 
 /* =========================
    AUTH UTIL
@@ -63,37 +68,46 @@ function ProtectedRoute({
    ADMIN LAYOUT
 ========================= */
 function AdminLayout() {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "system-ui, sans-serif" }}>
-      <aside style={{ width: 260, background: "#0f172a", color: "white", padding: "30px 20px", display: "flex", flexDirection: "column", gap: 30 }}>
-        <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700, textAlign: "center", borderBottom: "1px solid #1e293b", paddingBottom: 20 }}>
-          🛡 Fraud System
-        </h2>
-        <nav style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <NavLink to="/admin/dashboard" style={navStyle}>📊 Dashboard</NavLink>
-          <NavLink to="/admin/fraud" style={navStyle}>🚨 Fraud Investigation</NavLink>
-          <NavLink to="/admin/risk-ranking" style={navStyle}>📈 Risk Ranking</NavLink>
-          <NavLink to="/admin/products" style={navStyle}>📦 Product Management</NavLink>
-        </nav>
+    <div className="admin-layout-wrapper">
+      <aside className="admin-sidebar">
+        <div>
+          <div className="sidebar-logo" onClick={() => navigate("/admin/dashboard")} style={{ cursor: "pointer" }}>
+            <span>final</span>ui
+          </div>
+          <nav className="sidebar-nav-list">
+            <NavLink to="/admin/dashboard" className="sidebar-nav-item">📊 Dashboard</NavLink>
+            <NavLink to="/admin/products" className="sidebar-nav-item">📦 Products</NavLink>
+            <NavLink to="/admin/risk-ranking" className="sidebar-nav-item">👥 Customers</NavLink>
+            <NavLink to="/admin/investigation" className="sidebar-nav-item">🚨 Alerts</NavLink>
+            <NavLink to="/market" className="sidebar-nav-item">🛒 Marketplace</NavLink>
+          </nav>
+        </div>
+
+        <div>
+          <div className="sidebar-divider" />
+          <div className="sidebar-footer-profile" onClick={handleLogout} style={{ cursor: "pointer" }} title="Click to Logout">
+            <div className="profile-avatar-circle">DM</div>
+            <div className="profile-text-info">
+              <span className="profile-name-text">Diana Mary</span>
+              <span className="profile-role-text">Settings</span>
+            </div>
+          </div>
+        </div>
       </aside>
 
-      <main style={{ flex: 1, padding: 0, background: "#f8fafc" }}>
+      <main className="admin-main-panel">
         <Outlet />
       </main>
     </div>
   );
 }
-
-const navStyle = ({ isActive }: any) => ({
-  color: isActive ? "#38bdf8" : "#94a3b8",
-  background: isActive ? "#1e293b" : "transparent",
-  textDecoration: "none",
-  padding: "12px 16px",
-  borderRadius: "8px",
-  fontWeight: 600,
-  fontSize: 15,
-  transition: "all 0.2s"
-});
 
 /* =========================
    ROOT REDIRECT
@@ -129,6 +143,22 @@ export default function App() {
           element={<ProtectedRoute allowedRoles={["CUSTOMER", "ADMIN"]} />}
         >
           <Route index element={<ProductMarketplace />} />
+        </Route>
+
+        {/* ================= PERSONAL HISTORY ================= */}
+        <Route
+          path="/history"
+          element={<ProtectedRoute allowedRoles={["CUSTOMER", "ADMIN"]} />}
+        >
+          <Route index element={<PersonalTransactions />} />
+        </Route>
+
+        {/* ================= CATEGORY SHOP ================= */}
+        <Route
+          path="/shop/:category/:productId"
+          element={<ProtectedRoute allowedRoles={["CUSTOMER", "ADMIN"]} />}
+        >
+          <Route index element={<CategoryShop />} />
         </Route>
 
         {/* ================= ADMIN ================= */}

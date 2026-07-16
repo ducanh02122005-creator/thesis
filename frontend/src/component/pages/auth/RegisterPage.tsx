@@ -11,19 +11,21 @@ export default function RegisterPage() {
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [age, setAge] = useState("");
     const [loading, setLoading] = useState(false);
 
     // Bật/tắt phân quyền admin qua State nếu cần (hoặc bạn có thể cho hiển thị mặc định)
     const [showAdminOption] = useState(true);
 
     const handleRegister = async () => {
-        if (!email || !password || !fullName) {
-            alert("Please fill in all registration fields");
+        if (!email || !password || !fullName || !phoneNumber || !age) {
+            alert("Please fill in all registration fields including Phone Number and Age");
             return;
         }
         try {
             setLoading(true);
-            const payload = { fullName, email, password };
+            const payload = { fullName, email, password, phoneNumber, age: Number(age) };
 
             if (registerType === "CUSTOMER") {
                 await authApi.registerCustomer(payload);
@@ -59,6 +61,20 @@ export default function RegisterPage() {
                     placeholder="Email Address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    style={inputStyle}
+                />
+                <input
+                    type="text"
+                    placeholder="Phone Number (e.g. +1 234 567 89)"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    style={inputStyle}
+                />
+                <input
+                    type="number"
+                    placeholder="Age (e.g. 24)"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
                     style={inputStyle}
                 />
                 <input

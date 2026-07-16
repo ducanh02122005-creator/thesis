@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PredictionRepository extends JpaRepository<FraudPrediction, Long> {
+    java.util.Optional<FraudPrediction> findByTransactionId(com.example.frauddetection.entity.transaction.Transaction transactionId);
 }

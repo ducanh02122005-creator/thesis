@@ -160,7 +160,7 @@ export default function Dashboard() {
                             <XAxis dataKey="hour" />
                             <YAxis />
                             <Tooltip />
-                            <Bar dataKey="count" fill="#3b82f6" />
+                            <Bar dataKey="fraudCount" fill="#3b82f6" />
                         </BarChart>
                     </ResponsiveContainer>
 
@@ -174,7 +174,7 @@ export default function Dashboard() {
                         <PieChart>
                             <Pie
                                 data={byCategory}
-                                dataKey="count"
+                                dataKey="fraudCount"
                                 nameKey="category"
                                 outerRadius={100}
                                 label

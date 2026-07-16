@@ -19,6 +19,7 @@ export interface FraudByCategoryResponse {
 export interface TopUserResponse {
     userId: number;
     fullName: string;
+    email: string;
     fraudCount: number;
     riskScore: number;
     riskLevel?: string;

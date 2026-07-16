@@ -1,0 +1,131 @@
+================================================================================
+BACHELOR THESIS DEFENSE PRESENTATION ORAL SCRIPT (10-MIN VERSION WITH DEMO)
+================================================================================
+Title: Transformer-Based Financial Transaction Analysis for Fraud Detection
+Presenter: Duong Duc Anh
+Department of Information and Communication Technology, USTH
+Total Target Duration: ~9.5 Minutes (Includes 2.0-Minute Live Demo)
+================================================================================
+
+--------------------------------------------------------------------------------
+SLIDE 1: TITLE PAGE
+--------------------------------------------------------------------------------
+[Visuals]: Title, Presenter Name, Department, Date (June 2026).
+[Oral Script]:
+"Good morning, respected members of the committee. My name is Duong Duc Anh, and today I will present my bachelor thesis: 'Transformer-Based Financial Transaction Analysis for Fraud Detection,' supervised by Mr. Nguyen Dinh Bac and Mr. Huynh Vinh Nam. I will demonstrate how we combined a sequential deep learning model with a low-latency Java backend to block fraudulent checkouts in real time."
+[Time: 0.5 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 2: CONTEXT AND MOTIVATION
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: Global Fraud Losses, Static Rules Failure, Isolated Check Limit, Core Goal.
+[Oral Script]:
+"Let's look at Slide 2. Rapid digital transaction growth has driven credit card fraud losses to billions of dollars annually. Traditional rule-based engines fail to handle concept drift and capture complex, non-linear relationships. Furthermore, single-transaction checks ignore sequential context, yielding high false negatives. Our goal is to train a sequential deep-learning Transformer classifier and embed it directly in-memory within a Java Spring Boot backend."
+[Time: 0.5 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 3: PROJECT OBJECTIVES AND SCOPE
+--------------------------------------------------------------------------------
+[Visuals]: Shortened objectives: Sequence Modeling, Feature Engineering, Imbalance Mitigation, Micro-Latency Execution, Scope.
+[Oral Script]:
+"To address these limits, we set four objectives: First, model transaction sequences using execution hour, category, and log-amount. Second, implement a multi-stage feature preprocessing pipeline. Third, handle class imbalance using Random Under-Sampling. Fourth, deploy the model in-memory using Spring Boot. The scope is bounded to the Sparkov credit card transaction dataset, evaluating 1.8 million sequences from 2019 to 2020."
+[Time: 0.5 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 4: BEHAVIORAL FEATURE ENGINEERING PIPELINE
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: Feature Extraction, Feature Aggregation, Log Normalization formula.
+[Oral Script]:
+"On Slide 4, our feature engineering pipeline runs in three stages. We first extract the basic transaction attributes: hour, category, and raw amount. Second, we query historical user profile stats—such as fraud rates, purchase frequency, and account age—from the database to feed our Risk and Trust scoring engines. Third, we apply logarithmic scaling to continuous transaction amounts to compress their dynamic range and stabilize neural network training."
+[Time: 0.75 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 5: IMBALANCE MITIGATION AND INPUT FEATURE SPACE
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: Imbalance Mitigation (RUS), Model Input Triplet (Hour, Category, Log-Amount), Prediction Goal.
+[Oral Script]:
+"Next, Slide 5 details how we prepare data for sequence learning. First, we resolve the severe 0.58% class skew by downsampling the majority class to a strict 1:1 training ratio using Random Under-Sampling. Second, we define our model input triplet for each transaction: the hour of day to capture diurnal cycles, the merchant category to map purchase domains, and the log-amount to represent transaction sizes. Our goal is to learn sequential dependencies across these tokens to compute transaction risk."
+[Time: 0.75 Min]
+
+------------------------------------------------------------------------------------------------------------------------
+SLIDE 6: TRANSFORMER ARCHITECTURE AND MATH FOUNDATIONS
+--------------------------------------------------------------------------------
+[Visuals]: Left column: Input serialization formula, PE explanation, and self-attention math. Right column: TikZ architecture flowchart.
+[Oral Script]:
+"Moving on to Slide 6: we combine our model's mathematical foundations with its structural layout. First, raw transaction attributes are serialized by concatenating execution hour, merchant category, and log-amount into an input matrix X_in. Second, fixed sinusoidal positional encodings are added to preserve sequence coordinates. Third, the multi-head self-attention layer computes attention weights using Queries, Keys, and Values to capture cross-feature dependencies, as shown by the attention equation. Finally, the sequence is aggregated using global average pooling, normalized, and projected via a linear layer to output our softmax risk score."
+[Time: 1.25 Min]
+
+----------------------------------------
+SLIDE 7: RISK AND TRUST SCORING ENGINES
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: Risk Engine (formula R), Trust Engine (formula T).
+[Oral Script]:
+"On Slide 8, our backend intelligence calculates user profiles using two engines. The Risk Engine computes a short-term anomaly Risk Score between 0 and 100 based on user fraud rates, model inferences, midnight transaction rates, and frequency. The Trust Engine tracks long-term reputation between 0 and 100 by combining account age, successful checkouts, alerts history, and verification status."
+[Time: 0.75 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 8: ADAPTIVE DECISION ENGINE MATRIX
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: Evaluation Policy, Decision Matrix (colored status table), Adaptive Verification.
+[Oral Script]:
+"Slide 9 displays our Adaptive Decision Matrix. The Decision Engine intersects the Risk Level and Trust Level to select an action: APPROVE, REVIEW, or BLOCK. To optimize user experience, we avoid immediate declines for trusted customers. For example, a high-risk transaction associated with an excellent trust profile is routed to additional multi-factor verification rather than blocked outright, whereas high-risk, low-trust requests are blocked instantly."
+[Time: 0.5 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 9: FULL-STACK MICROSERVICE PROCESSING FLOW
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: Spring Boot Backend, In-Memory ONNX Inference, React Administration Dashboard.
+[Oral Script]:
+"Slide 10 details our microservice pipeline. The Spring Boot backend intercepts incoming payloads, validates DTOs, and runs local JVM queries using the ONNX Runtime Java API. This local execution removes external network latency, reducing inference to sub-milliseconds. Live alerts, user risk scoring logs, and system metrics are visualized on our React administration panel."
+[Time: 0.5 Min]
+
+--------------------------------------------------------------------------------
+LIVE SOFTWARE DEMO
+--------------------------------------------------------------------------------
+[Visuals]: Presenter shares screen showing local Spring Boot backend running and the Vite-React administration dashboard UI.
+[Oral Script]:
+"I will now demonstrate our system in action. Here we have our Spring Boot microservice running locally, and our Vite-React-TypeScript dashboard on the screen. First, I will execute a mock legitimate transaction. As you can see, the Spring Boot backend intercepts the payload, maps it to our DTO, and queries the local ONNX inference engine in-memory. The transaction is instantly approved with sub-millisecond latency, and the dashboard updates. 
+
+Next, I will trigger a high-risk transaction characterized by anomalous parameters—specifically, a large transaction amount executed at an unusual hour under a high-risk shopping category. Immediately, the model's inference risk score surges past our high threshold, and our Decision Engine triggers a 'BLOCK' policy. A real-time alert is dispatched, which instantly appears on our React dashboard. The chart dynamically visualizes the risk spike, demonstrating how our full-stack pipeline seamlessly bridges deep sequential analysis with real-time operational response."
+[Time: 2.0 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 10: QUANTITATIVE EXPERIMENTAL RESULTS
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: Performance (metrics table), Business Priority.
+[Oral Script]:
+"Slide 11 highlights our quantitative results. Evaluated under extreme imbalance, our Transformer classifier achieves a high fraud sensitivity recall of 0.9688 and a superior minority F1-score of 0.2302 over baseline models. In financial operations, minimizing false negatives—that is, catching fraud attempts—takes precedence, making the Transformer our most effective model."
+[Time: 0.75 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 11: DECISION TREE DETAILED ERROR DISTRIBUTION
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: Evaluation Profile, Observation (confusion matrix).
+[Oral Script]:
+"Slide 12 breaks down the baseline error profile. On our test set, the Decision Tree correctly flags 2,078 fraud checkouts and approves 539,743 legitimate transactions. However, it lets 67 attacks leak through and generates over 13,000 false alarms. This highlights the baseline's tendency to produce a larger false-positive footprint compared to our sequence model."
+[Time: 0.5 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 13: LIMITATIONS AND FUTURE ROADMAP
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: Data Attrition, Weight Staleness, SMOTE & Focal Loss, Input Context Extension.
+[Oral Script]:
+"On Slide 13, we identify key limitations and future steps. Random Under-Sampling discards over 90% of genuine samples, and static ONNX models cannot update weights in real time. Our roadmap includes transitioning to Focal Loss to handle class skew without discarding data, and embedding dynamic, long-term database user profile metrics directly into the Transformer's feature tokenization."
+[Time: 0.5 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 13: CONCLUSION
+--------------------------------------------------------------------------------
+[Visuals]: Shortened points: End-to-End System, Sequence Modeling, High Detection Rate, Enterprise Ready.
+[Oral Script]:
+"In conclusion, we implemented a full-stack, sequential deep-learning fraud detection system. By using self-attention, the Transformer captures complex feature dependencies. Embedding ONNX in Spring Boot establishes a micro-latency blueprint for enterprise banking architectures, successfully bridging machine learning with robust software engineering. Thank you for your time. I am now open to your questions."
+[Time: 0.5 Min]
+
+--------------------------------------------------------------------------------
+SLIDE 14: THANK YOU
+--------------------------------------------------------------------------------
+[Visuals]: Centered "Thank You!" and "Questions & Comments".
+[Oral Script]:
+(Presenter thanks the panel, handles questions and discussion).
+[Time: Q&A Session]
+================================================================================

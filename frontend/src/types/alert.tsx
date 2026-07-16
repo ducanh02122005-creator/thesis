@@ -3,6 +3,7 @@ export interface AlertResponse {
     transactionId: number;
     riskScore: number;
     status: string;
+    userId: number;
     createdAt: string;
 }
 

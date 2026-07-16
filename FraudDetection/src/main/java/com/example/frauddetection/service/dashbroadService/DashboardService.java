@@ -59,4 +59,15 @@ public class DashboardService {
 
         return dashboardRepository.getTopUsers(pageable);
     }
+
+    public List<TopUserResponse> getAllUsersRisk() {
+        List<TopUserResponse> raw = dashboardRepository.getAllUsersRisk();
+        for (TopUserResponse r : raw) {
+            if (r.getRiskScore() == null) r.setRiskScore(0.0);
+            if (r.getRiskLevel() == null) r.setRiskLevel(com.example.frauddetection.entity.user.RiskLevel.LOW);
+            if (r.getTrustScore() == null) r.setTrustScore(100.0);
+            if (r.getTrustLevel() == null) r.setTrustLevel(com.example.frauddetection.entity.user.TrustLevel.EXCELLENT);
+        }
+        return raw;
+    }
 }

@@ -83,6 +83,7 @@ public class AlertService {
                 )
                 .riskScore(alert.getRiskScore())
                 .status(alert.getStatus())
+                .userId(alert.getTransactionId().getUser().getId())
                 .createdAt(alert.getCreatedAt())
                 .build();
     }

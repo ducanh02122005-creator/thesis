@@ -36,6 +36,12 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
+    @Column(length = 20)
+    private String phoneNumber;
+
+    @Column
+    private Integer age;
+
     @Column(nullable = false)
     private String password;
 
@@ -44,6 +50,14 @@ public class User implements UserDetails {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Builder.Default
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean isEmailVerified = false;
+
+    @Builder.Default
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean isPhoneVerified = false;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -55,7 +69,18 @@ public class User implements UserDetails {
 
     @PrePersist
     public void init() {
-        createdAt = LocalDateTime.now();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        if (isEmailVerified == null) {
+            isEmailVerified = false;
+        }
+        if (isPhoneVerified == null) {
+            isPhoneVerified = false;
+        }
+        if (age == null) {
+            age = 24;
+        }
     }
 
     @Override

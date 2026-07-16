@@ -15,6 +15,8 @@ public class TopUserResponse {
 
     private String fullName;
 
+    private String email;
+
     private Long fraudCount;
 
     private Double riskScore;

@@ -16,4 +16,17 @@ public class ProfilesResponse {
     private RiskLevel riskLevel;
     private Double trustScore;
     private TrustLevel trustLevel;
+
+    private Double accountAgeScore;
+    private Double purchaseSuccessRateScore;
+    private Double fraudHistoryScore;
+    private Double verificationScore;
+    private Double purchaseActivityScore;
+
+    private Boolean isEmailVerified;
+    private Boolean isPhoneVerified;
+
+    private String phoneNumber;
+    private String email;
+    private Integer age;
 }

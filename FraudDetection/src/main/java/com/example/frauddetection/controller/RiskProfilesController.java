@@ -4,10 +4,7 @@ import com.example.frauddetection.dtos.riskProfiles.ProfilesResponse;
 import com.example.frauddetection.service.userSerivice.UserRiskProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,5 +15,15 @@ public class RiskProfilesController {
     @GetMapping
     public ResponseEntity<ProfilesResponse> getUserProfiles(@PathVariable Long id){
         return service.getUserProfiles(id);
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<ProfilesResponse> verifyEmail(@PathVariable Long id) {
+        return service.verifyEmail(id);
+    }
+
+    @PostMapping("/verify-phone")
+    public ResponseEntity<ProfilesResponse> verifyPhone(@PathVariable Long id) {
+        return service.verifyPhone(id);
     }
 }
